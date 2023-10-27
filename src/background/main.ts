@@ -4,7 +4,7 @@ import type {Tabs} from 'webextension-polyfill'
 // Only on dev mode
 if (import.meta.hot) {
   // @ts-expect-error for background HMR
-  import('../../../../../../@vite/client')
+  import('/@vite/client')
   // Load latest content script
   import('./contentScriptHMR')
 }
