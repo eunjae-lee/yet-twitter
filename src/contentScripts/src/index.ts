@@ -1,14 +1,16 @@
 import debounce from 'just-debounce-it'
 import { waitForElementToExist } from './wait'
+import { enhanceTwitter } from './enhanceTwitter'
+import { readOptionAsync } from '~/logic'
 
 export async function startWatching(selector: string) {
+  const extOptions = await readOptionAsync()
   await waitForElementToExist(selector)
 
   const resizeObserver = new ResizeObserver(
     debounce(() => {
-      // eslint-disable-next-line no-console
-      console.log('changed!')
-    }, 500),
+      enhanceTwitter(selector, extOptions)
+    }, 100),
   )
 
   // start observing a DOM node

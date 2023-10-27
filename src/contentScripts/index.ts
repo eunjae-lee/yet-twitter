@@ -1,11 +1,21 @@
 import { onMessage } from 'webext-bridge/content-script'
-import { startWatching } from './src'
 // import { createApp } from 'vue'
 // import App from './views/App.vue'
 // import { setupApp } from '~/logic/common-setup'
 
 // Firefox `browser.tabs.executeScript()` requires scripts return a primitive value
-;(() => {
+
+import { startWatching } from './src'
+import { revertTwitterLogo } from './src/revertTwitterLogo'
+import { readOptionAsync } from '~/logic'
+;(async () => {
+  if (!['twitter.com', 'x.com'].includes(window.location.host))
+    return
+
+  readOptionAsync().then((extOptions) => {
+    if (extOptions.revertTwitterLogo)
+      revertTwitterLogo()
+  })
   // console.info('[vitesse-webext] Hello world from content script')
   startWatching('section[aria-labelledby="accessible-list-0"] > div')
   startWatching('section[aria-labelledby="accessible-list-1"] > div')

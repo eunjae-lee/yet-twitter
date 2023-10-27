@@ -1,5 +1,10 @@
 <template>
-  <p class="mt-2 opacity-50">
-    This is the {{ $app.context }} page
+  <p>Enhance your Twitter experience.</p>
+  <p class="mt-1">
+    by
+    <a
+      class="opacity-75 hover:opacity-100"
+      href="https://twitter.com/eunjae_lee"
+    >@eunjae_lee</a>
   </p>
 </template>
