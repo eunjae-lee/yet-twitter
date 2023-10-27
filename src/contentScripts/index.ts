@@ -1,36 +1,20 @@
-import { onMessage } from 'webext-bridge/content-script'
-// import { createApp } from 'vue'
+/* eslint-disable unicorn/prefer-top-level-await */
+import {onMessage} from 'webext-bridge/content-script'
+import {onLoad} from './src'
+// Import { createApp } from 'vue'
 // import App from './views/App.vue'
-// import { setupApp } from '~/logic/common-setup'
+// import { setupApp } from '~/logic/commonSetup'
 
 // Firefox `browser.tabs.executeScript()` requires scripts return a primitive value
-
-import { startWatching } from './src'
-import { revertTwitterLogo } from './src/revertTwitterLogo'
-import { readOptionAsync } from '~/logic'
 ;(async () => {
-  if (!['twitter.com', 'x.com'].includes(window.location.host))
-    return
-
-  readOptionAsync().then((extOptions) => {
-    if (extOptions.revertTwitterLogo)
-      revertTwitterLogo()
-  })
-  // console.info('[vitesse-webext] Hello world from content script')
-  startWatching('section[aria-labelledby="accessible-list-0"] > div')
-  startWatching('section[aria-labelledby="accessible-list-1"] > div')
-  // Array.from(document.querySelectorAll('a[href="/home"][role="tab"]')).forEach(
-  //   (tab) => {
-  //     tab.addEventListener('click', watch)
-  //   }
-  // )
+  onLoad()
 
   // communication example: send previous tab title from background page
-  onMessage('tab-prev', ({ data }) => {
-    // console.log(`[vitesse-webext] Navigate from page "${data.title}"`)
+  onMessage('tab-prev', ({data}) => {
+    // Console.log(`[vitesse-webext] Navigate from page "${data.title}"`)
   })
 
-  // mount component to context window
+  // Mount component to context window
   // const container = document.createElement('div')
   // container.id = __NAME__
   // const root = document.createElement('div')

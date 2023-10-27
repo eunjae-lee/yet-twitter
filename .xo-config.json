@@ -1,0 +1,30 @@
+{
+  "space": true,
+  "semicolon": false,
+  "prettier": true,
+  "ignores": [
+    "modules.d.ts",
+    "playwright.config.ts",
+    "shim.d.ts",
+    "vite.config.background.ts",
+    "vite.config.content.ts",
+    "vite.config.ts",
+    "postcss.config.js",
+    "tailwind.config.js",
+    "src/contentScripts/index.ts"
+  ],
+  "rules": {
+    "@typescript-eslint/no-loss-of-precision": "off",
+    "import/extensions": "off",
+    "no-await-in-loop": "off",
+    "unicorn/filename-case": "off",
+    "@typescript-eslint/no-unsafe-assignment": "off",
+    "n/file-extension-in-import": "off",
+    "unicorn/prefer-module": "off",
+    "@typescript-eslint/no-unsafe-argument": "off",
+    "import/no-unassigned-import": "off",
+    "@typescript-eslint/naming-convention": "off",
+    "@typescript-eslint/no-unsafe-call": "off",
+    "semi-style": "off"
+  }
+}

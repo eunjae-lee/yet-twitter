@@ -1,7 +1,7 @@
-import { createApp } from 'vue'
-import App from './Popup.vue'
-import { setupApp } from '~/logic/common-setup'
+import {createApp} from 'vue'
 import '../styles'
+import App from './Popup.vue'
+import {setupApp} from '~/logic/commonSetup'
 
 const app = createApp(App)
 setupApp(app)

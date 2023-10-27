@@ -1,6 +1,7 @@
-import { createApp } from 'vue'
+/* eslint-disable import/order */
+import {createApp} from 'vue'
 import App from './Options.vue'
-import { setupApp } from '~/logic/common-setup'
+import {setupApp} from '~/logic/commonSetup'
 import '../styles'
 
 const app = createApp(App)

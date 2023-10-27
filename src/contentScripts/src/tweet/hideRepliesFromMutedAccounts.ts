@@ -1,1 +1,3 @@
-export const hideRepliesFromMutedAccounts = () => {}
+export const hideRepliesFromMutedAccounts = () => {
+  // Do something
+}

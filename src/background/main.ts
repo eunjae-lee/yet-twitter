@@ -1,23 +1,23 @@
-import { onMessage, sendMessage } from 'webext-bridge/background'
-import type { Tabs } from 'webextension-polyfill'
+import {onMessage, sendMessage} from 'webext-bridge/background'
+import type {Tabs} from 'webextension-polyfill'
 
-// only on dev mode
+// Only on dev mode
 if (import.meta.hot) {
   // @ts-expect-error for background HMR
-  import('/@vite/client')
-  // load latest content script
+  import('../../../../../../@vite/client')
+  // Load latest content script
   import('./contentScriptHMR')
 }
 
 browser.runtime.onInstalled.addListener((): void => {
-  // console.log('Extension installed')
+  // Console.log('Extension installed')
 })
 
 let previousTabId = 0
 
-// communication example: send previous tab title from background page
+// Communication example: send previous tab title from background page
 // see shim.d.ts for type declaration
-browser.tabs.onActivated.addListener(async ({ tabId }) => {
+browser.tabs.onActivated.addListener(async ({tabId}) => {
   if (!previousTabId) {
     previousTabId = tabId
     return
@@ -28,17 +28,15 @@ browser.tabs.onActivated.addListener(async ({ tabId }) => {
   try {
     tab = await browser.tabs.get(previousTabId)
     previousTabId = tabId
-  }
-  catch {
+  } catch {
     return
   }
 
-  // eslint-disable-next-line no-console
   console.log('previous tab', tab)
-  sendMessage(
+  await sendMessage(
     'tab-prev',
-    { title: tab.title },
-    { context: 'content-script', tabId },
+    {title: tab.title},
+    {context: 'content-script', tabId},
   )
 })
 
@@ -48,8 +46,7 @@ onMessage('get-current-tab', async () => {
     return {
       title: tab?.title,
     }
-  }
-  catch {
+  } catch {
     return {
       title: undefined,
     }
