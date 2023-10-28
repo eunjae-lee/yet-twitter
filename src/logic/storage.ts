@@ -21,9 +21,7 @@ export type ExtOptions = typeof DEFAULT_OPTIONS
 export const readOptionAsync = async () => {
   // eslint-disable-next-line unicorn/no-await-expression-member
   try {
-    return JSON.parse(
-      (await storage.local.get(KEY_OPTIONS))[KEY_OPTIONS],
-    ) as ExtOptions
+    return (await storage.getItem(KEY_OPTIONS)) as ExtOptions
   } catch (err) {
     return DEFAULT_OPTIONS
   }
@@ -48,12 +46,14 @@ const storage = {
   },
 }
 
-export const logTweetRemoved = async (screenName: string) => {
+export const logTweetRemoved = async (userNames: string[]) => {
   let stats = await storage.getItem(KEY_STATS_FOR_TWEETS)
   if (!stats) {
     await storage.setItem(KEY_STATS_FOR_TWEETS, JSON.stringify({}))
     stats = {}
   }
-  stats[screenName] = stats[screenName] ? stats[screenName] + 1 : 1
+  for (const userName of userNames) {
+    stats[userName] = stats[userName] ? stats[userName] + 1 : 1
+  }
   await storage.setItem(KEY_STATS_FOR_TWEETS, stats)
 }
