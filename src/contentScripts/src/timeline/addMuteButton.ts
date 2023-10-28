@@ -1,18 +1,11 @@
 import {getText} from '~/i18n'
 import {muteAccount} from '~/logic'
+import {queryTweets} from './utils'
 
 const MARKER_CLASS = 'yet-twitter-mute-btn-added'
 
 export const addMuteButton = (selector: string) => {
-  const container = document.querySelector(selector)
-  if (!container) {
-    return
-  }
-  const tweets = Array.from(
-    container.querySelectorAll(
-      `div[data-testid="cellInnerDiv"]:not(.${MARKER_CLASS})`,
-    ),
-  )
+  const tweets = queryTweets(selector, `:not(.${MARKER_CLASS})`)
   tweets.forEach((tweet) => {
     tweet.classList.add(MARKER_CLASS)
     const bookmarkButton: HTMLElement | null = tweet.querySelector(

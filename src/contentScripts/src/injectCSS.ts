@@ -1,5 +1,9 @@
 export const injectCSS = () => {
   const css = `
+  .yet-twitter-hidden-tweet {
+    display: none;
+  }
+
   .yet-twitter-mute-btn {
     background: none;
     border: none;
