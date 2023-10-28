@@ -8,7 +8,7 @@
 *.pem
 *.xpi
 *.zip
-!public/extension.*
+!public/yet-twitter.*
 dist
 dist-ssr
 extension/manifest.json
