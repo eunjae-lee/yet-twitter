@@ -1,5 +1,5 @@
 <template>
-  <p>Customize your Twitter timeline</p>
+  <p>Customize your Twitter experience</p>
   <p class="mt-1">
     by
     <a
