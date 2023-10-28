@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import {useStorageLocal} from '~/composables/useStorageLocal'
 import {KEY_OPTIONS, DEFAULT_OPTIONS} from '~/logic/storage'
+const optionsLoaded = ref(false)
 const extOptions = useStorageLocal(KEY_OPTIONS, DEFAULT_OPTIONS)
+watch(extOptions, () => (optionsLoaded.value = true))
 </script>
 
 <template>
-  <div class="pt-8">
+  <div class="pt-8" v-if="optionsLoaded">
     <div class="form-control">
       <label class="space-x-2 cursor-pointer label">
         <span class="label-text">Revert Twitter Logo</span>
