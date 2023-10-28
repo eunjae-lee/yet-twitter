@@ -20,7 +20,10 @@ export async function watchTimeline(selector: string) {
         watchTimeline(selector)
         return
       }
-      await cleanUpTimeline(selector, extOptions)
+
+      if (window.location.pathname === '/home') {
+        await cleanUpTimeline(selector, extOptions)
+      }
     }, 100),
   )
 

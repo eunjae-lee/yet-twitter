@@ -1,3 +1,5 @@
+import {logTweetRemoved} from '~/logic'
+
 export const hideBlueMarks = async (selector: string) => {
   const tweetsContainer = document
     .querySelector(selector)
@@ -17,7 +19,7 @@ export const hideBlueMarks = async (selector: string) => {
       "article[data-testid='tweet'] a[role='link']",
     )
     const screenName = links[1].textContent
-    const userName = links[2].textContent
-    console.log('💡 removed tweet from', screenName, userName)
+    // const userName = links[2].textContent
+    logTweetRemoved(screenName || '')
   }
 }

@@ -1,6 +1,6 @@
 /* eslint-disable unicorn/prefer-top-level-await */
 import {onMessage} from 'webext-bridge/content-script'
-import {onLoad} from './src'
+import {onLoad} from './src/onLoad'
 // Import { createApp } from 'vue'
 // import App from './views/App.vue'
 // import { setupApp } from '~/logic/commonSetup'
