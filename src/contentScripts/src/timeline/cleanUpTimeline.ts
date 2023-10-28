@@ -2,10 +2,10 @@
 //   hideRepliesFromBlockedAccounts,
 //   hideRepliesFromMutedAccounts,
 // } from './tweet'
-import {hideBlueMarks} from './timeline'
 import type {ExtOptions} from '~/logic'
+import {hideBlueMarks} from './hideBlueMarks'
 
-export const enhanceTwitter = async (
+export const cleanUpTimeline = async (
   selector: string,
   extOptions: ExtOptions,
 ) => {

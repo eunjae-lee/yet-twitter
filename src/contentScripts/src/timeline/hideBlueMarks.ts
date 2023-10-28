@@ -6,8 +6,10 @@ export const hideBlueMarks = async (selector: string) => {
     return
   }
 
-  const tweets = tweetsContainer.querySelectorAll(
-    "div[data-testid='cellInnerDiv']:has(article[data-testid='tweet'] a[role='link'] > div > div > span > svg[aria-label='Verified account'])",
+  const tweets: HTMLElement[] = Array.from(
+    tweetsContainer.querySelectorAll(
+      "div[data-testid='cellInnerDiv']:has(article[data-testid='tweet'] a[role='link'] > div > div > span > svg[aria-label='Verified account'])",
+    ),
   )
   for (const tweet of tweets) {
     tweet.style.display = 'none'
