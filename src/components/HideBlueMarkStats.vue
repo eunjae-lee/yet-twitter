@@ -1,18 +1,13 @@
 <script setup lang="ts">
-import {useStorageLocal} from '~/composables/useStorageLocal'
 import {
-  DEFAULT_OPTIONS,
-  KEY_OPTIONS,
-  KEY_STATS_FOR_TWEETS,
-  type TweetRemovedStat,
-} from '~/logic'
+  useExtensionOptions,
+  useStatsForTweets,
+} from '~/composables/useStorageLocal'
 
 const opened = ref(false)
-const stats = useStorageLocal<Record<string, TweetRemovedStat>>(
-  KEY_STATS_FOR_TWEETS,
-  {},
-)
-const extOptions = useStorageLocal(KEY_OPTIONS, DEFAULT_OPTIONS)
+const stats = useStatsForTweets()
+const extOptions = useExtensionOptions()
+
 const totalHiddenTweets = computed(() => {
   return Object.values(stats.value).reduce<number>((count, stat) => {
     count += stat.count
@@ -69,8 +64,8 @@ const allowUser = (userName: string) => {
               class="btn btn-xs"
               @click="allowUser(item.userName)"
             >
-              <SmallCheckIcon />
-              <span class="sr-only">{{ $t('allow_this_user') }}</span>
+              <IconCheck />
+              <span class="sr-only">{{ $t('allow_this_account') }}</span>
             </button>
             <span class="opacity-50">{{ item.count }}</span> -
             <span class="font-bold">{{ item.screenName }}</span>

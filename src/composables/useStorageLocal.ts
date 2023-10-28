@@ -6,6 +6,12 @@ import type {
   UseStorageAsyncOptions,
 } from '@vueuse/core'
 import {useStorageAsync} from '@vueuse/core'
+import {
+  DEFAULT_OPTIONS,
+  KEY_OPTIONS,
+  KEY_STATS_FOR_TWEETS,
+  TweetRemovedStat,
+} from '~/logic'
 
 const storageLocal: StorageLikeAsync = {
   async removeItem(key: string) {
@@ -22,8 +28,14 @@ const storageLocal: StorageLikeAsync = {
   },
 }
 
-export const useStorageLocal = <T>(
+const useStorageLocal = <T>(
   key: string,
   initialValue: MaybeRef<T>,
   options?: UseStorageAsyncOptions<T>,
 ): RemovableRef<T> => useStorageAsync(key, initialValue, storageLocal, options)
+
+export const useStatsForTweets = () =>
+  useStorageLocal<Record<string, TweetRemovedStat>>(KEY_STATS_FOR_TWEETS, {})
+
+export const useExtensionOptions = () =>
+  useStorageLocal(KEY_OPTIONS, DEFAULT_OPTIONS)

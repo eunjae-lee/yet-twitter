@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import {useStorageLocal} from '~/composables/useStorageLocal'
-import {KEY_OPTIONS, DEFAULT_OPTIONS} from '~/logic/storage'
+import {useExtensionOptions} from '~/composables/useStorageLocal'
 const optionsLoaded = ref(false)
-const extOptions = useStorageLocal(KEY_OPTIONS, DEFAULT_OPTIONS)
+const extOptions = useExtensionOptions()
 watch(extOptions, () => {
   optionsLoaded.value = true
 })
@@ -62,6 +61,11 @@ onMounted(() => {
         </label>
       </div>
       <HideBlueMarkStats v-if="extOptions.hideBlueMarks" />
+    </section>
+
+    <section>
+      <h2>{{ $t('allowed_accounts') }}</h2>
+      <AllowedAccounts />
     </section>
 
     <section v-if="false">
