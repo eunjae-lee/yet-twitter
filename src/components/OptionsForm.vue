@@ -32,6 +32,7 @@ onMounted(() => {
           />
         </label>
       </div>
+
       <div class="form-control">
         <label class="space-x-2 cursor-pointer label">
           <span class="flex items-center gap-1 label-text">
@@ -61,6 +62,19 @@ onMounted(() => {
         </label>
       </div>
       <HideBlueMarkStats v-if="extOptions.hideBlueMarks" />
+
+      <div class="form-control">
+        <label class="space-x-2 cursor-pointer label">
+          <span class="flex items-center gap-1 label-text">
+            <span>{{ $t('hide_right_sidebar') }}</span>
+          </span>
+          <input
+            v-model="extOptions.hideRightSidebar"
+            type="checkbox"
+            class="toggle toggle-primary"
+          />
+        </label>
+      </div>
     </section>
 
     <section>

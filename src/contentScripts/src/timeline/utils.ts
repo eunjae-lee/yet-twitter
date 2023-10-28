@@ -20,11 +20,15 @@ export const getNames = (tweet: HTMLElement) => {
   const links = tweet.querySelectorAll(
     "article[data-testid='tweet'] a[role='link']",
   )
-  const screenName = (links[1].textContent || '').trim()
-  const userName = (links[2].textContent || '').trim()
-  return {
-    screenName,
-    userName,
+  if (links && links[1] && links[2]) {
+    const screenName = (links[1].textContent || '').trim()
+    const userName = (links[2].textContent || '').trim()
+    return {
+      screenName,
+      userName,
+    }
+  } else {
+    return {screenName: undefined, userName: undefined}
   }
 }
 
@@ -49,7 +53,7 @@ export const watchSelector = async (
         // this section has been detached.
         // let's wait for it to appear again
         resizeObserver.disconnect()
-        observeAndRun(selector, callback, debounceMs)
+        watchSelector(selector, callback, debounceMs)
         return
       }
 

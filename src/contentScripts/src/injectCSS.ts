@@ -1,4 +1,4 @@
-export const injectCSS = () => {
+export const injectDefaultCSS = () => {
   const css = `
   .yet-twitter-hidden-tweet {
     display: none;
@@ -26,6 +26,10 @@ export const injectCSS = () => {
     color: #4a99e9;
   }
   `
+  injectCSS(css)
+}
+
+export const injectCSS = (css: string) => {
   const style = document.createElement('style')
 
   // @ts-ignore

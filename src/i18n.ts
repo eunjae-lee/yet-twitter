@@ -8,6 +8,7 @@ const messages = {
     allow_this_account: '이 계정 허용하기',
     allow_blue_mark_desc:
       '트윗을 허용하고 싶은 계정이 있으면 그 옆 체크 박스를 누르세요.',
+    hide_right_sidebar: '오른쪽 사이드바 숨기기',
 
     tweet: '트윗',
 
@@ -27,6 +28,7 @@ const messages = {
     allow_this_account: 'Allow this account',
     allow_blue_mark_desc:
       'Click the check button below if you want to allow tweets from them.',
+    hide_right_sidebar: 'Hide right sidebar',
 
     tweet: 'Tweet',
 

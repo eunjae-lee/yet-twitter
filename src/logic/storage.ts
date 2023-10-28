@@ -9,6 +9,7 @@ export const DEFAULT_OPTIONS = {
 
   // Timeline
   hideBlueMarks: true,
+  hideRightSidebar: true,
 
   // Common
   revertTwitterLogo: true,
