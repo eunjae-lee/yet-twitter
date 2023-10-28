@@ -9,6 +9,16 @@ const disallowUser = (username: string) => {
   delete options.value.allowedUsernames[username]
   options.value = options.value
 }
+
+const userToAllow = ref('')
+const allowUser = (event: Event) => {
+  event.preventDefault()
+  if (userToAllow.value.length > 0) {
+    options.value.allowedUsernames[userToAllow.value] = true
+    options.value = options.value
+    userToAllow.value = ''
+  }
+}
 </script>
 
 <template>
@@ -24,7 +34,16 @@ const disallowUser = (username: string) => {
     </div>
     <div class="mt-4 shadow-xl card w-96 bg-base-200" v-if="opened">
       <div class="card-body">
-        <p>{{ $t('allowed_accounts_desc') }}</p>
+        <form class="flex items-center gap-2" @submit="allowUser">
+          <input
+            type="text"
+            placeholder="@username to allow"
+            class="w-full input input-sm input-bordered"
+            v-model="userToAllow"
+          />
+          <button type="submit" class="btn btn-xs btn-secondary">Allow</button>
+        </form>
+        <p class="mt-4">{{ $t('allowed_accounts_desc') }}</p>
         <ul>
           <li
             v-for="username in usernames"
