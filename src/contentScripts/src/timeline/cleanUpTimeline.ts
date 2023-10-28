@@ -10,6 +10,6 @@ export const cleanUpTimeline = async (
   extOptions: ExtOptions,
 ) => {
   if (extOptions.hideBlueMarks) {
-    await hideBlueMarks(selector)
+    await hideBlueMarks(selector, extOptions)
   }
 }

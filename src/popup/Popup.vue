@@ -5,7 +5,7 @@ function openOptionsPage() {
 </script>
 
 <template>
-  <main class="w-[300px] flex flex-col items-center py-4 px-6 space-y-2">
+  <main class="flex flex-col items-center px-6 py-4 space-y-2 w-[28rem]">
     <Logo />
     <SharedTitle />
     <SharedSubtitle />

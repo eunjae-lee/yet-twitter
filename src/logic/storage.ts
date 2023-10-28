@@ -1,7 +1,6 @@
 import {storage as _storage} from 'webextension-polyfill'
 
 export const KEY_OPTIONS = 'yet-twitter-options'
-const KEY_STATS_FOR_TWEETS = 'yet-twitter-stats-for-tweets'
 
 export const DEFAULT_OPTIONS = {
   // Tweet
@@ -13,7 +12,7 @@ export const DEFAULT_OPTIONS = {
 
   // Common
   revertTwitterLogo: true,
-  allowedUsernames: [] as string[],
+  allowedUsernames: {} as Record<string, boolean>,
 }
 
 export type ExtOptions = typeof DEFAULT_OPTIONS
@@ -46,14 +45,29 @@ const storage = {
   },
 }
 
-export const logTweetRemoved = async (userNames: string[]) => {
+export const KEY_STATS_FOR_TWEETS = 'yet-twitter-stats-for-tweets'
+export type TweetRemovedStat = {
+  screenName: string
+  count: number
+  lastTimestamp: string
+}
+export const logTweetRemoved = async (
+  names: Array<{userName: string; screenName: string}>,
+) => {
   let stats = await storage.getItem(KEY_STATS_FOR_TWEETS)
   if (!stats) {
     await storage.setItem(KEY_STATS_FOR_TWEETS, JSON.stringify({}))
     stats = {}
   }
-  for (const userName of userNames) {
-    stats[userName] = stats[userName] ? stats[userName] + 1 : 1
+  for (const name of names) {
+    if (typeof stats[name.userName] !== 'object') {
+      stats[name.userName] = {
+        count: 0,
+      }
+    }
+    stats[name.userName].screenName = name.screenName
+    stats[name.userName].count += 1
+    stats[name.userName].lastTimestamp = new Date().toISOString()
   }
   await storage.setItem(KEY_STATS_FOR_TWEETS, stats)
 }

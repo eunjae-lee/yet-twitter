@@ -3,7 +3,20 @@ import {useStorageLocal} from '~/composables/useStorageLocal'
 import {KEY_OPTIONS, DEFAULT_OPTIONS} from '~/logic/storage'
 const optionsLoaded = ref(false)
 const extOptions = useStorageLocal(KEY_OPTIONS, DEFAULT_OPTIONS)
-watch(extOptions, () => (optionsLoaded.value = true))
+watch(extOptions, () => {
+  optionsLoaded.value = true
+})
+onMounted(() => {
+  setTimeout(() => {
+    if (!optionsLoaded.value) {
+      // If it's still not loaded, then it's probably the first time opening this extension,
+      // and the default value was stored immediately.
+      // However, it won't trigger `watch` in this case.
+      // So we just proceed rendering the options.
+      optionsLoaded.value = true
+    }
+  }, 200)
+})
 </script>
 
 <template>
@@ -48,6 +61,7 @@ watch(extOptions, () => (optionsLoaded.value = true))
           />
         </label>
       </div>
+      <HideBlueMarkStats v-if="extOptions.hideBlueMarks" />
     </section>
 
     <section v-if="false">
@@ -63,6 +77,10 @@ watch(extOptions, () => (optionsLoaded.value = true))
         </label>
       </div>
     </section>
+
+    <!-- <section>
+      <pre>{{ JSON.stringify(extOptions, null, 2) }}</pre>
+    </section> -->
   </div>
 </template>
 

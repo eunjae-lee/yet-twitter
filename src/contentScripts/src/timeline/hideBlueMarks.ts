@@ -1,6 +1,6 @@
-import {logTweetRemoved} from '~/logic'
+import {ExtOptions, logTweetRemoved} from '~/logic'
 
-export const hideBlueMarks = async (selector: string) => {
+export const hideBlueMarks = async (selector: string, options: ExtOptions) => {
   const tweetsContainer = document
     .querySelector(selector)
     ?.querySelector('div > div')
@@ -13,17 +13,20 @@ export const hideBlueMarks = async (selector: string) => {
       "div[data-testid='cellInnerDiv']:has(article[data-testid='tweet'] a[role='link'] > div > div > span > svg[aria-label='Verified account'])",
     ),
   )
-  const removedUserNames: string[] = []
+  const removedNames: Array<{userName: string; screenName: string}> = []
   for (const tweet of tweets) {
-    tweet.style.display = 'none'
     const links = tweet.querySelectorAll(
       "article[data-testid='tweet'] a[role='link']",
     )
-    // const screenName = links[1].textContent
-    const userName = links[2].textContent
-    if (userName) {
-      removedUserNames.push(userName)
+    const screenName = (links[1].textContent || '').trim()
+    const userName = (links[2].textContent || '').trim()
+    if (!options.allowedUsernames[userName]) {
+      tweet.style.display = 'none'
+      removedNames.push({
+        userName,
+        screenName,
+      })
     }
   }
-  await logTweetRemoved(removedUserNames)
+  await logTweetRemoved(removedNames)
 }
