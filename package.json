@@ -28,7 +28,8 @@
     "lint": "xo",
     "test": "xo && vitest test",
     "test:e2e": "playwright test",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "release": "npm run build && npm run pack && git add . && git commit -m 'chore: release' && git push"
   },
   "dependencies": {
     "just-debounce-it": "^3.2.0"
