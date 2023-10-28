@@ -8,8 +8,10 @@ import type {
 import {useStorageAsync} from '@vueuse/core'
 import {
   DEFAULT_OPTIONS,
+  KEY_MUTE_ACCOUNTS,
   KEY_OPTIONS,
   KEY_STATS_FOR_TWEETS,
+  MutedAccount,
   TweetRemovedStat,
 } from '~/logic'
 
@@ -39,3 +41,6 @@ export const useStatsForTweets = () =>
 
 export const useExtensionOptions = () =>
   useStorageLocal(KEY_OPTIONS, DEFAULT_OPTIONS)
+
+export const useMutedAccounts = () =>
+  useStorageLocal<Record<string, MutedAccount>>(KEY_MUTE_ACCOUNTS, {})

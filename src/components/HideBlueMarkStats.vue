@@ -4,7 +4,6 @@ import {
   useStatsForTweets,
 } from '~/composables/useStorageLocal'
 
-const opened = ref(false)
 const stats = useStatsForTweets()
 const extOptions = useExtensionOptions()
 const sortBy = ref<'recent' | 'most'>('recent')
@@ -42,63 +41,57 @@ const allowUser = (userName: string) => {
 </script>
 
 <template>
-  <div>
-    <div class="flex justify-end">
-      <button class="btn btn-xs" @click="opened = !opened">
-        {{ $t('view_stats') }}
-      </button>
-    </div>
-    <div v-if="opened" class="mt-4 shadow-xl card w-96 bg-base-200">
-      <div class="card-body">
-        <p>
-          <span class="font-bold">{{ $t('total_hidden_tweet') }}:</span>
-          {{ new Intl.NumberFormat().format(totalHiddenTweets) }}
-        </p>
-        <p class="flex items-center gap-1">
-          {{ $t('allow_blue_mark_desc') }}
-        </p>
-        <div class="w-full tabs">
-          <button
-            class="tab tab-bordered"
-            :class="{'tab-active': sortBy === 'recent'}"
-            @click="sortBy = 'recent'"
-          >
-            Recently Hidden
-          </button>
-          <button
-            class="tab tab-bordered"
-            :class="{'tab-active': sortBy === 'most'}"
-            @click="sortBy = 'most'"
-          >
-            The Most Hidden
-          </button>
-        </div>
-        <ul>
-          <li
-            v-for="item in sortedList"
-            :key="item.userName"
-            class="flex items-center gap-1 shrink-0"
-          >
-            <button
-              type="button"
-              class="btn btn-xs"
-              @click="allowUser(item.userName)"
-            >
-              <IconCheck />
-              <span class="sr-only">{{ $t('allow_this_account') }}</span>
-            </button>
-            <span class="opacity-50">{{ item.count }}</span> -
-            <span class="font-bold">{{ item.screenName }}</span>
-            (<a
-              class="opacity-75 link"
-              :href="`https://twitter.com/${item.userName}`"
-              target="_blank"
-              rel="noreferrer"
-              >{{ item.userName }}</a
-            >)
-          </li>
-        </ul>
+  <div class="mt-4 shadow-xl card w-96 bg-base-200">
+    <div class="card-body">
+      <p>
+        <span class="font-bold">{{ $t('total_hidden_tweet') }}:</span>
+        {{ new Intl.NumberFormat().format(totalHiddenTweets) }}
+      </p>
+      <p class="flex items-center gap-1">
+        {{ $t('allow_blue_mark_desc') }}
+      </p>
+      <div class="w-full tabs">
+        <button
+          class="tab tab-bordered"
+          :class="{'tab-active': sortBy === 'recent'}"
+          @click="sortBy = 'recent'"
+        >
+          Recently Hidden
+        </button>
+        <button
+          class="tab tab-bordered"
+          :class="{'tab-active': sortBy === 'most'}"
+          @click="sortBy = 'most'"
+        >
+          The Most Hidden
+        </button>
       </div>
+      <ul>
+        <li
+          v-for="item in sortedList"
+          :key="item.userName"
+          class="flex items-center gap-1 shrink-0"
+        >
+          <button
+            type="button"
+            class="btn btn-xs"
+            @click="allowUser(item.userName)"
+            :title="$t('allow')"
+          >
+            <IconThumbsUp />
+            <span class="sr-only">{{ $t('allow_this_account') }}</span>
+          </button>
+          <span class="opacity-50">{{ item.count }}</span> -
+          <span class="font-bold">{{ item.screenName }}</span>
+          (<a
+            class="opacity-75 link"
+            :href="`https://twitter.com/${item.userName}`"
+            target="_blank"
+            rel="noreferrer"
+            >{{ item.userName }}</a
+          >)
+        </li>
+      </ul>
     </div>
   </div>
 </template>

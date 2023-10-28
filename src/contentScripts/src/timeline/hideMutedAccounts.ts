@@ -9,7 +9,11 @@ export const hideMutedAccounts = (
 
   for (const tweet of tweets) {
     const {userName} = getNames(tweet)
-    if (mutes[userName] && new Date() < new Date(mutes[userName].muteUntil)) {
+    if (
+      userName &&
+      mutes[userName] &&
+      new Date() < new Date(mutes[userName].muteUntil)
+    ) {
       hideTweet(tweet)
     }
   }

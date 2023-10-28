@@ -61,8 +61,14 @@ onMounted(() => {
           />
         </label>
       </div>
-      <HideBlueMarkStats v-if="extOptions.hideBlueMarks" />
     </section>
+
+    <CollapsableSection
+      :title="$t('stats_of_hidden_tweets_with_blue_mark')"
+      v-if="extOptions.hideBlueMarks"
+    >
+      <HideBlueMarkStats />
+    </CollapsableSection>
 
     <CollapsableSection :title="$t('allowed_accounts')">
       <AllowedAccounts />

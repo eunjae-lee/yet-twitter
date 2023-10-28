@@ -33,7 +33,10 @@ const allowUser = (event: Event) => {
         <button type="submit" class="btn btn-xs btn-secondary">Allow</button>
       </form>
       <p class="mt-4">{{ $t('allowed_accounts_desc') }}</p>
-      <ul>
+      <p v-if="usernames.length === 0" class="mt-4 text-center opacity-50">
+        ({{ $t('none') }})
+      </p>
+      <ul v-else>
         <li
           v-for="username in usernames"
           :key="username"
