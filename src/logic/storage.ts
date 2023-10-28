@@ -3,7 +3,7 @@ import {useStorageLocal} from '~/composables/useStorageLocal'
 
 const KEY = 'yet-twitter-options'
 
-export const extOptions = useStorageLocal(KEY, {
+const DEFAULT_OPTIONS = {
   // Tweet
   hideRepliesFromMutedAccounts: true,
   hideRepliesFromBlockedAccounts: true,
@@ -14,10 +14,17 @@ export const extOptions = useStorageLocal(KEY, {
   // Common
   revertTwitterLogo: true,
   allowedUsernames: [] as string[],
-})
+}
+
+export const extOptions = useStorageLocal(KEY, DEFAULT_OPTIONS)
 
 export type ExtOptions = (typeof extOptions)['value']
 
-export const readOptionAsync = async () =>
+export const readOptionAsync = async () => {
   // eslint-disable-next-line unicorn/no-await-expression-member
-  JSON.parse((await storage.local.get(KEY))[KEY]) as ExtOptions
+  try {
+    return JSON.parse((await storage.local.get(KEY))[KEY]) as ExtOptions
+  } catch (err) {
+    return DEFAULT_OPTIONS
+  }
+}

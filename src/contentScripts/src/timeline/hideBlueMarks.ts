@@ -16,5 +16,6 @@ export const hideBlueMarks = async (selector: string) => {
     )
     const screenName = links[1].textContent
     const userName = links[2].textContent
+    console.log('💡 removed tweet from', screenName, userName)
   }
 }
