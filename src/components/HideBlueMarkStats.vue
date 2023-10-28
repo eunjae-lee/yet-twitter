@@ -7,6 +7,7 @@ import {
 const opened = ref(false)
 const stats = useStatsForTweets()
 const extOptions = useExtensionOptions()
+const sortBy = ref<'recent' | 'most'>('recent')
 
 const totalHiddenTweets = computed(() => {
   return Object.values(stats.value).reduce<number>((count, stat) => {
@@ -16,9 +17,15 @@ const totalHiddenTweets = computed(() => {
 })
 const sortedList = computed(() => {
   return Object.entries(stats.value)
-    .sort(([_userName1, stat1], [_userName2, stat2]) =>
-      stat1.lastTimestamp.localeCompare(stat2.lastTimestamp),
-    )
+    .sort(([_userName1, stat1], [_userName2, stat2]) => {
+      if (sortBy.value === 'recent') {
+        return stat1.lastTimestamp.localeCompare(stat2.lastTimestamp)
+      } else if (sortBy.value === 'most') {
+        return stat2.count - stat1.count
+      } else {
+        return 0
+      }
+    })
     .map(([userName, stat]) => ({
       ...stat,
       userName,
@@ -37,10 +44,7 @@ const allowUser = (userName: string) => {
 <template>
   <div>
     <div class="flex justify-end">
-      <button
-        class="normal-case btn btn-xs btn-secondary"
-        @click="opened = !opened"
-      >
+      <button class="btn btn-xs" @click="opened = !opened">
         {{ $t('view_stats') }}
       </button>
     </div>
@@ -53,6 +57,22 @@ const allowUser = (userName: string) => {
         <p class="flex items-center gap-1">
           {{ $t('allow_blue_mark_desc') }}
         </p>
+        <div class="w-full tabs">
+          <button
+            class="tab tab-bordered"
+            :class="{'tab-active': sortBy === 'recent'}"
+            @click="sortBy = 'recent'"
+          >
+            Recently Hidden
+          </button>
+          <button
+            class="tab tab-bordered"
+            :class="{'tab-active': sortBy === 'most'}"
+            @click="sortBy = 'most'"
+          >
+            The Most Hidden
+          </button>
+        </div>
         <ul>
           <li
             v-for="item in sortedList"
