@@ -14,6 +14,9 @@ const messages = {
     allowed_accounts: '허용된 계정',
     allowed_accounts_desc: '이 계정들의 트윗은 숨기지 않습니다',
     view_list: '목록 보기',
+
+    how_long_to_mute: '이 계정을 며칠간 뮤트하시겠습니까?',
+    mute_error_msg: '며칠간 뮤트하고 싶은지 숫자를 입력해주세요 (예: 3)',
   },
   en: {
     timeline: 'Timeline',
@@ -30,6 +33,9 @@ const messages = {
     allowed_accounts: 'Allowed Accounts',
     allowed_accounts_desc: 'Tweets from these accounts are not hidden.',
     view_list: 'View List',
+
+    how_long_to_mute: 'How many days do you want to mute this account for?',
+    mute_error_msg: 'Type a number of days to mute this account (e.g. 3)',
   },
 }
 
@@ -37,14 +43,19 @@ type Lang = keyof typeof messages
 
 export type MessageKeys = keyof (typeof messages)['ko']
 
-const isKorean = () => {
+export const isKorean = () => {
   // @ts-ignore
   const lang = navigator.language || navigator.userLanguage
   return lang === 'ko' || lang === 'ko-KR'
 }
 
+export const getLang = (): Lang => (isKorean() ? 'ko' : 'en')
+
+export const getText = (key: MessageKeys, lang?: Lang) =>
+  messages[lang ?? getLang()][key]
+
 export const i18n = () => {
-  const lang: Lang = isKorean() ? 'ko' : 'en'
+  const lang = getLang()
   // const lang: Lang = 'ko'
   return {
     // @ts-ignore

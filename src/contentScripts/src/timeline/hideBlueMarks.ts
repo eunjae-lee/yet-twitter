@@ -1,15 +1,13 @@
 import {ExtOptions, logTweetRemoved} from '~/logic'
 
 export const hideBlueMarks = async (selector: string, options: ExtOptions) => {
-  const tweetsContainer = document
-    .querySelector(selector)
-    ?.querySelector('div > div')
-  if (!tweetsContainer) {
+  const container = document.querySelector(selector)?.querySelector('div > div')
+  if (!container) {
     return
   }
 
   const tweets: HTMLElement[] = Array.from(
-    tweetsContainer.querySelectorAll(
+    container.querySelectorAll(
       "div[data-testid='cellInnerDiv']:has(article[data-testid='tweet'] a[role='link'] > div > div > span > svg[aria-label='Verified account'])",
     ),
   )

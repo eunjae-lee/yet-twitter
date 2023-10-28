@@ -8,7 +8,7 @@ export const DEFAULT_OPTIONS = {
   hideRepliesFromBlockedAccounts: true,
 
   // Timeline
-  hideBlueMarks: false,
+  hideBlueMarks: true,
 
   // Common
   revertTwitterLogo: true,
@@ -20,7 +20,9 @@ export type ExtOptions = typeof DEFAULT_OPTIONS
 export const readOptionAsync = async () => {
   // eslint-disable-next-line unicorn/no-await-expression-member
   try {
-    return (await storage.getItem(KEY_OPTIONS)) as ExtOptions
+    return (
+      ((await storage.getItem(KEY_OPTIONS)) as ExtOptions) ?? DEFAULT_OPTIONS
+    )
   } catch (err) {
     return DEFAULT_OPTIONS
   }
@@ -54,13 +56,15 @@ export type TweetRemovedStat = {
 export const logTweetRemoved = async (
   names: Array<{userName: string; screenName: string}>,
 ) => {
-  let stats = await storage.getItem(KEY_STATS_FOR_TWEETS)
+  let stats: Record<string, TweetRemovedStat> | undefined =
+    await storage.getItem(KEY_STATS_FOR_TWEETS)
   if (!stats) {
-    await storage.setItem(KEY_STATS_FOR_TWEETS, JSON.stringify({}))
+    await storage.setItem(KEY_STATS_FOR_TWEETS, {})
     stats = {}
   }
   for (const name of names) {
     if (typeof stats[name.userName] !== 'object') {
+      // @ts-ignore
       stats[name.userName] = {
         count: 0,
       }
@@ -70,4 +74,49 @@ export const logTweetRemoved = async (
     stats[name.userName].lastTimestamp = new Date().toISOString()
   }
   await storage.setItem(KEY_STATS_FOR_TWEETS, stats)
+}
+
+export const KEY_MUTE_ACCOUNTS = 'yet-twitter-mute-accounts'
+export type MutedAccount = {
+  screenName: string
+  muteUntil: string
+  days: number
+}
+export type MutedAccountsStorage = {
+  [userName: string]: MutedAccount
+}
+export const muteAccount = async ({
+  userName,
+  screenName,
+  days,
+}: {
+  userName: string
+  screenName: string
+  days: number
+}) => {
+  let mutes: Record<string, MutedAccount> | undefined =
+    await storage.getItem(KEY_MUTE_ACCOUNTS)
+  if (!mutes) {
+    await storage.setItem(KEY_MUTE_ACCOUNTS, {})
+    mutes = {}
+  }
+  mutes[userName] = {
+    screenName,
+    days,
+    muteUntil: new Date(
+      new Date().getTime() + 1000 * 60 * 60 * 24 * days,
+    ).toISOString(),
+  }
+  await storage.setItem(KEY_MUTE_ACCOUNTS, mutes)
+}
+
+export const readMutedAccounts = async () => {
+  // eslint-disable-next-line unicorn/no-await-expression-member
+  try {
+    return (
+      ((await storage.getItem(KEY_MUTE_ACCOUNTS)) as MutedAccountsStorage) ?? {}
+    )
+  } catch (err) {
+    return {}
+  }
 }

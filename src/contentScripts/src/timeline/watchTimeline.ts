@@ -1,10 +1,11 @@
 import debounce from 'just-debounce-it'
-import {readOptionAsync} from '~/logic'
+import {readMutedAccounts, readOptionAsync} from '~/logic'
 import {waitForElementToExist} from '../wait'
-import {cleanUpTimeline} from './cleanUpTimeline'
+import {editTimeline} from './editTimeline'
 
 export async function watchTimeline(selector: string) {
   const extOptions = await readOptionAsync()
+  const mutedAccountsStorage = await readMutedAccounts()
   await waitForElementToExist(selector)
 
   const resizeObserver = new ResizeObserver(
@@ -22,7 +23,7 @@ export async function watchTimeline(selector: string) {
       }
 
       if (window.location.pathname === '/home') {
-        await cleanUpTimeline(selector, extOptions)
+        await editTimeline({selector, extOptions, mutedAccountsStorage})
       }
     }, 100),
   )

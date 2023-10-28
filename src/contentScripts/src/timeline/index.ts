@@ -1,3 +1,3 @@
 export * from './hideBlueMarks'
 export * from './watchTimeline'
-export * from './cleanUpTimeline'
+export * from './editTimeline'

@@ -1,6 +1,7 @@
 import {revertTwitterLogo} from './revertTwitterLogo'
 import {readOptionAsync} from '~/logic'
 import {watchTimeline} from './timeline'
+import {injectCSS} from './injectCSS'
 
 // works for both
 // - timeline: /home
@@ -10,6 +11,8 @@ export async function onLoad() {
   if (!['twitter.com', 'x.com'].includes(window.location.host)) {
     return
   }
+
+  injectCSS()
 
   const extOptions = await readOptionAsync()
   if (extOptions.revertTwitterLogo) {
