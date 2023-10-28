@@ -10,7 +10,7 @@ if (import.meta.hot) {
 }
 
 browser.runtime.onInstalled.addListener((): void => {
-  // Console.log('Extension installed')
+  browser.runtime.openOptionsPage()
 })
 
 let previousTabId = 0
