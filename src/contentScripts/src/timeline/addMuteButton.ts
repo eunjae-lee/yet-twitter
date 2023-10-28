@@ -8,10 +8,8 @@ export const addMuteButton = (selector: string) => {
   const tweets = queryTweets(selector, `:not(.${MARKER_CLASS})`)
   tweets.forEach((tweet) => {
     tweet.classList.add(MARKER_CLASS)
-    const bookmarkButton: HTMLElement | null = tweet.querySelector(
-      'div:has(> div[aria-label="Bookmark"][role="button"])',
-    )
-    if (!bookmarkButton) {
+    const container = tweet.querySelector('div[data-testid="User-Name"]')
+    if (!container) {
       return
     }
     const muteButton = document.createElement('button')
@@ -34,7 +32,7 @@ export const addMuteButton = (selector: string) => {
         <line x1="16" x2="22" y1="9" y2="15" />
       </svg>
     `
-    bookmarkButton.parentElement?.insertBefore(muteButton, bookmarkButton)
+    container.appendChild(muteButton)
     muteButton.addEventListener('click', async () => {
       const days: string = prompt(getText('how_long_to_mute')) ?? ''
       if (days === '') {

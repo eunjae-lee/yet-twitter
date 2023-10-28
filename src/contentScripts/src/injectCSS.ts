@@ -5,6 +5,9 @@ export const injectDefaultCSS = () => {
   }
 
   .yet-twitter-mute-btn {
+    position: absolute;
+    right: -2.25rem;
+
     background: none;
     border: none;
     margin: 0;
