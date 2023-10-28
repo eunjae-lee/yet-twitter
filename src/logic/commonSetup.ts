@@ -1,6 +1,9 @@
 import type {App} from 'vue'
+import {i18n} from '~/i18n'
 
 export function setupApp(app: App) {
+  app.use(i18n())
+
   // Inject a globally available `$app` object in template
   app.config.globalProperties.$app = {
     context: '',
