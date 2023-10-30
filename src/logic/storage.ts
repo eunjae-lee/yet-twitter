@@ -8,7 +8,7 @@ export const DEFAULT_OPTIONS = {
   hideRepliesFromBlockedAccounts: true,
 
   // Timeline
-  hideBlueMarks: true,
+  hideBlueMarks: false,
   hideRightSidebar: true,
 
   // Common
