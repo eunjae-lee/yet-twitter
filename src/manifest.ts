@@ -37,7 +37,7 @@ export async function getManifest() {
     permissions: ['storage'],
     content_scripts: [
       {
-        matches: ['<all_urls>'],
+        matches: ['*://*.twitter.com/*', '*://*.x.com/*'],
         js: ['dist/contentScripts/index.global.js'],
       },
     ],
