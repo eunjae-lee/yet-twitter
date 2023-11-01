@@ -21,12 +21,12 @@ const messages = {
     view_list: '목록 보기',
 
     none: '없음',
-    muted_accounts: '뮤트된 계정',
+    muted_accounts: '뮤트 된 계정',
     unmute: '뮤트 풀기',
     click_to_unmute: '뮤트를 풀려면 버튼을 누르세요.',
 
-    how_long_to_mute: '이 계정을 며칠간 뮤트하시겠습니까?',
-    mute_error_msg: '며칠간 뮤트하고 싶은지 숫자를 입력해주세요 (예: 3)',
+    how_long_to_mute: '이 계정을 며칠간 뮤트 하시겠습니까?',
+    mute_error_msg: '며칠간 뮤트 하고 싶은지 숫자를 입력해 주세요 (예: 3)',
   },
   en: {
     timeline: 'Timeline',
@@ -39,7 +39,7 @@ const messages = {
     total_hidden_tweet: 'Total hidden tweets',
     allow_this_account: 'Allow this account',
     allow_blue_mark_desc:
-      'Click the button below if you want to allow tweets from them.',
+      'Click the button below to allow tweets from this account.',
     allow: 'Allow',
     hide_right_sidebar: 'Hide right sidebar',
 
@@ -55,7 +55,7 @@ const messages = {
     click_to_unmute: 'Click the button to unmute.',
 
     how_long_to_mute: 'How many days do you want to mute this account for?',
-    mute_error_msg: 'Type a number of days to mute this account (e.g. 3)',
+    mute_error_msg: 'Enter the number of days to mute this account (e.g., 3).',
   },
 }
 
