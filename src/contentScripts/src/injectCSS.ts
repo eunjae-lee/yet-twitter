@@ -22,7 +22,7 @@ export const injectDefaultCSS = () => {
     background: #0f171f;
   }
   .yet-twitter-mute-btn svg {
-    opacity: 0.5;
+    opacity: 0.3;
   }
   .yet-twitter-mute-btn:hover svg {
     opacity: 1;
