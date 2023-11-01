@@ -1,7 +1,7 @@
 {
   "name": "yet-twitter",
-  "displayName": "Yet Twitter",
-  "version": "0.0.2",
+  "displayName": "Yet Twitter - Minimal Twitter Theme",
+  "version": "0.0.3",
   "private": true,
   "packageManager": "pnpm@8.3.1",
   "description": "Customize your Twitter experience",
@@ -71,5 +71,8 @@
     "webext-bridge": "^6.0.1",
     "webextension-polyfill": "^0.10.0",
     "xo": "0.56.0"
+  },
+  "configs": {
+    "interceptResponse": true
   }
 }

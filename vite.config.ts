@@ -1,14 +1,14 @@
 /// <reference types="vitest" />
 
-import { dirname, relative } from 'node:path'
-import type { UserConfig } from 'vite'
-import { defineConfig } from 'vite'
+import {dirname, relative} from 'node:path'
+import type {UserConfig} from 'vite'
+import {defineConfig} from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
 import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
-import { isDev, port, r } from './scripts/utils'
+import {isDev, port, r} from './scripts/utils'
 import packageJson from './package.json'
 
 export const sharedConfig: UserConfig = {
@@ -21,6 +21,9 @@ export const sharedConfig: UserConfig = {
   define: {
     __DEV__: isDev,
     __NAME__: JSON.stringify(packageJson.name),
+    __INTERCEPT_RESPONSE__: JSON.stringify(
+      packageJson.configs.interceptResponse,
+    ),
   },
   plugins: [
     Vue(),
@@ -56,7 +59,7 @@ export const sharedConfig: UserConfig = {
       name: 'assets-rewrite',
       enforce: 'post',
       apply: 'build',
-      transformIndexHtml(html, { path }) {
+      transformIndexHtml(html, {path}) {
         return html.replace(
           /"\/assets\//g,
           `"${relative(dirname(path), '/assets')}/`,
@@ -70,7 +73,7 @@ export const sharedConfig: UserConfig = {
   },
 }
 
-export default defineConfig(({ command }) => ({
+export default defineConfig(({command}) => ({
   ...sharedConfig,
   base: command === 'serve' ? `http://localhost:${port}/` : '/dist/',
   server: {
