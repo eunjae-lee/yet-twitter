@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {useExtensionOptions} from '~/composables/useStorageLocal'
+import {migrateOptions} from '~/logic'
 const optionsLoaded = ref(false)
 const extOptions = useExtensionOptions()
 watch(extOptions, () => {
@@ -15,6 +16,14 @@ onMounted(() => {
       optionsLoaded.value = true
     }
   }, 200)
+})
+watch(optionsLoaded, (newValue) => {
+  if (newValue) {
+    const newOptions = migrateOptions(extOptions.value)
+    if (newOptions.ver !== extOptions.value.ver) {
+      extOptions.value = newOptions
+    }
+  }
 })
 </script>
 

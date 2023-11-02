@@ -15,7 +15,9 @@ import {
   TweetRemovedStat,
 } from '~/logic'
 
-const storageLocal: StorageLikeAsync = {
+export const storageLocal: StorageLikeAsync & {
+  getParsedItem: (key: string) => Promise<any>
+} = {
   async removeItem(key: string) {
     return storage.local.remove(key)
   },
@@ -26,7 +28,15 @@ const storageLocal: StorageLikeAsync = {
 
   async getItem(key: string) {
     // eslint-disable-next-line unicorn/no-await-expression-member
-    return (await storage.local.get(key))[key] as unknown
+    return (await storage.local.get(key))[key] as string
+  },
+
+  async getParsedItem(key: string) {
+    try {
+      return JSON.parse((await this.getItem(key)) as string)
+    } catch (err) {
+      return undefined
+    }
   },
 }
 
