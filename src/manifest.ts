@@ -43,7 +43,10 @@ export async function getManifest() {
     ],
     web_accessible_resources: [
       {
-        resources: ['dist/contentScripts/style.css'],
+        resources: [
+          'dist/contentScripts/style.css',
+          'dist/contentScripts/injected.js',
+        ],
         matches: ['<all_urls>'],
       },
     ],

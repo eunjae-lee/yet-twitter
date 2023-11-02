@@ -3,7 +3,7 @@ import {readOptionAsync} from '~/logic'
 import {watchTimeline} from './timeline'
 import {injectCSS, injectDefaultCSS} from './injectCSS'
 
-// works for both
+// works for
 // - timeline: /home
 // - tweet: /username/status/xxx
 // - profile: /username

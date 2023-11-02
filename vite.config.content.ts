@@ -2,6 +2,7 @@ import {defineConfig} from 'vite'
 import {sharedConfig} from './vite.config'
 import {isDev, r} from './scripts/utils'
 import packageJson from './package.json'
+import fs from 'fs/promises'
 
 // bundling the content script using Vite
 export default defineConfig({
@@ -36,4 +37,16 @@ export default defineConfig({
       },
     },
   },
+  plugins: [
+    ...(sharedConfig.plugins ?? []),
+    {
+      name: 'postbuild-commands', // the name of your custom plugin. Could be anything.
+      closeBundle: async () => {
+        await fs.copyFile(
+          'src/contentScripts/injected.js',
+          'extension/dist/contentScripts/injected.js',
+        )
+      },
+    },
+  ],
 })
