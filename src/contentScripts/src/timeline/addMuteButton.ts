@@ -1,6 +1,6 @@
 import {getText} from '~/i18n'
 import {muteAccount} from '~/logic'
-import {queryTweets} from './utils'
+import {getNames, queryTweets} from './utils'
 
 const MARKER_CLASS = 'yet-twitter-mute-btn-added'
 
@@ -40,16 +40,14 @@ export const addMuteButton = (selector: string) => {
       }
       const daysNum = parseInt(days, 10)
       if (Number.isInteger(daysNum) && daysNum > 0) {
-        const links = tweet.querySelectorAll(
-          "article[data-testid='tweet'] a[role='link']",
-        )
-        const screenName = (links[1].textContent || '').trim()
-        const userName = (links[2].textContent || '').trim()
-        await muteAccount({
-          userName,
-          screenName,
-          days: daysNum,
-        })
+        const {userName, screenName} = getNames(tweet)
+        if (userName && screenName) {
+          await muteAccount({
+            userName,
+            screenName,
+            days: daysNum,
+          })
+        }
       } else {
         alert(getText('mute_error_msg'))
       }

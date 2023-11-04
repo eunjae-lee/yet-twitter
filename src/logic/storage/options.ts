@@ -58,7 +58,7 @@ export const readOptionAsync = async () => {
     const migratedOptions = migrateOptions(options)
     if (options.ver !== migratedOptions.ver) {
       storageLocal.setItem(KEY_OPTIONS, JSON.stringify(migratedOptions))
-      return migrateOptions
+      return migratedOptions
     }
     return options
   } catch (err) {

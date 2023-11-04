@@ -2,11 +2,13 @@ import {storageLocal} from '~/composables/useStorageLocal'
 
 export const KEY_STATS_FOR_TWEETS = 'yet-twitter-stats-for-tweets'
 export type TweetRemovedStat = {
-  screenName: string
+  userName: string
   count: number
   lastTimestamp: string
 }
 export const logTweetRemoved = async (
+  // userName: Eunjae lee
+  // screenName: @eunjae-lee
   names: Array<{userName: string; screenName: string}>,
 ) => {
   let stats: Record<string, TweetRemovedStat> | undefined =
@@ -16,15 +18,15 @@ export const logTweetRemoved = async (
     stats = {}
   }
   for (const name of names) {
-    if (typeof stats[name.userName] !== 'object') {
+    if (typeof stats[name.screenName] !== 'object') {
       // @ts-ignore
-      stats[name.userName] = {
+      stats[name.screenName] = {
         count: 0,
       }
     }
-    stats[name.userName].screenName = name.screenName
-    stats[name.userName].count += 1
-    stats[name.userName].lastTimestamp = new Date().toISOString()
+    stats[name.screenName].userName = name.userName
+    stats[name.screenName].count += 1
+    stats[name.screenName].lastTimestamp = new Date().toISOString()
   }
   await storageLocal.setItem(KEY_STATS_FOR_TWEETS, JSON.stringify(stats))
 }

@@ -16,7 +16,7 @@ const totalHiddenTweets = computed(() => {
 })
 const sortedList = computed(() => {
   return Object.entries(stats.value)
-    .sort(([_userName1, stat1], [_userName2, stat2]) => {
+    .sort(([_screenName1, stat1], [_screenName2, stat2]) => {
       if (sortBy.value === 'recent') {
         return stat1.lastTimestamp.localeCompare(stat2.lastTimestamp)
       } else if (sortBy.value === 'most') {
@@ -25,17 +25,17 @@ const sortedList = computed(() => {
         return 0
       }
     })
-    .map(([userName, stat]) => ({
+    .map(([screenName, stat]) => ({
       ...stat,
-      userName,
+      screenName,
     }))
-    .filter((item) => !extOptions.value.allowedUsernames[item.userName])
+    .filter((item) => !extOptions.value.allowedUsernames[item.screenName])
 })
-const allowUser = (userName: string) => {
+const allowUser = (screenName: string) => {
   if (typeof extOptions.value.allowedUsernames !== 'object') {
     extOptions.value.allowedUsernames = {}
   }
-  extOptions.value.allowedUsernames[userName] = true
+  extOptions.value.allowedUsernames[screenName] = true
   extOptions.value = extOptions.value
 }
 </script>
@@ -69,26 +69,26 @@ const allowUser = (userName: string) => {
       <ul>
         <li
           v-for="item in sortedList"
-          :key="item.userName"
+          :key="item.screenName"
           class="flex items-center gap-1 shrink-0"
         >
           <button
             type="button"
             class="btn btn-xs"
-            @click="allowUser(item.userName)"
+            @click="allowUser(item.screenName)"
             :title="$t('allow')"
           >
             <IconThumbsUp />
             <span class="sr-only">{{ $t('allow_this_account') }}</span>
           </button>
           <span class="opacity-50">{{ item.count }}</span> -
-          <span class="font-bold">{{ item.screenName }}</span>
+          <span class="font-bold">{{ item.userName }}</span>
           (<a
             class="opacity-75 link"
-            :href="`https://twitter.com/${item.userName}`"
+            :href="`https://twitter.com/${item.screenName}`"
             target="_blank"
             rel="noreferrer"
-            >{{ item.userName }}</a
+            >{{ item.screenName }}</a
           >)
         </li>
       </ul>

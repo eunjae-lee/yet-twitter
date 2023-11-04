@@ -8,8 +8,10 @@ export const hideBlueMarks = async (selector: string, options: ExtOptions) => {
   )
   const removedNames: Array<{userName: string; screenName: string}> = []
   for (const tweet of tweets) {
+    // userName: Eunjae lee
+    // screenName: @eunjae-lee
     const {screenName, userName} = getNames(tweet)
-    if (screenName && userName && !options.allowedUsernames[userName]) {
+    if (screenName && userName && !options.allowedUsernames[screenName]) {
       hideTweet(tweet)
       removedNames.push({
         userName,

@@ -21,11 +21,11 @@ export const getNames = (tweet: HTMLElement) => {
     "article[data-testid='tweet'] a[role='link']",
   )
   if (links && links[1] && links[2]) {
-    const screenName = (links[1].textContent || '').trim()
-    const userName = (links[2].textContent || '').trim()
+    const userName = (links[1].textContent || '').trim()
+    const screenName = (links[2].textContent || '').trim()
     return {
-      screenName,
-      userName,
+      userName, // Eunjae Lee
+      screenName, // @eunjae-lee
     }
   } else {
     return {screenName: undefined, userName: undefined}

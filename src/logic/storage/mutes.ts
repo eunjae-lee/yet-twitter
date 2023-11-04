@@ -2,16 +2,16 @@ import {storageLocal} from '~/composables/useStorageLocal'
 
 export const KEY_MUTE_ACCOUNTS = 'yet-twitter-mute-accounts'
 export type MutedAccount = {
-  screenName: string
+  userName: string
   muteUntil: string
   days: number
 }
 export type MutedAccountsStorage = {
-  [userName: string]: MutedAccount
+  [screenName: string]: MutedAccount
 }
 export const muteAccount = async ({
-  userName,
-  screenName,
+  userName, // Eunjae Lee
+  screenName, // @eunjae-lee
   days,
 }: {
   userName: string
@@ -25,8 +25,8 @@ export const muteAccount = async ({
     await storageLocal.setItem(KEY_MUTE_ACCOUNTS, JSON.stringify({}))
     mutes = {}
   }
-  mutes[userName] = {
-    screenName,
+  mutes[screenName] = {
+    userName,
     days,
     muteUntil: new Date(
       new Date().getTime() + 1000 * 60 * 60 * 24 * days,

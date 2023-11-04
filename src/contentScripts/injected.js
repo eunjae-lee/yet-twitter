@@ -3,13 +3,13 @@ const rules = [
     check: (url) =>
       url.startsWith('https://twitter.com/i/api/graphql/') &&
       new URL(url).pathname.endsWith('/HomeLatestTimeline'),
-    className: 'yet-twitter-latest-timeline',
+    classNames: ['yet-twitter-timeline', 'yet-twitter-latest-timeline'],
   },
   {
     check: (url) =>
       url.startsWith('https://twitter.com/i/api/graphql/') &&
       new URL(url).pathname.endsWith('/HomeTimeline'),
-    className: 'yet-twitter-recommendation-timeline',
+    classNames: ['yet-twitter-timeline', 'yet-twitter-recommendation-timeline'],
   },
 ]
 
@@ -76,7 +76,9 @@ const rules = [
                 script.setAttribute('type', 'application/json')
                 script.setAttribute('charset', 'utf-8')
                 script.innerHTML = this.responseText
-                script.classList.add(rule.className)
+                rule.classNames.forEach((className) =>
+                  script.classList.add(className),
+                )
                 ;(document.head || document.documentElement).appendChild(script)
               }
             })
