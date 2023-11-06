@@ -1,6 +1,7 @@
 import {readMutedAccounts, readOptionAsync} from '~/logic'
 import {editTimeline} from './editTimeline'
 import {watchSelector} from './utils'
+import {loadTimelineData} from './timelineData'
 
 export async function watchTimeline(selector: string) {
   const extOptions = await readOptionAsync()
@@ -8,6 +9,7 @@ export async function watchTimeline(selector: string) {
 
   watchSelector(selector, async () => {
     if (window.location.pathname === '/home') {
+      loadTimelineData()
       await editTimeline({selector, extOptions, mutedAccountsStorage})
     }
   })

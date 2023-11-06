@@ -11,7 +11,9 @@ export const queryTweets = (
   }
   return Array.from(
     container.querySelectorAll(
-      `div[data-testid="cellInnerDiv"]${modifier ?? ''}`,
+      `div[data-testid="cellInnerDiv"]:not(.yet-twitter-hidden-tweet)${
+        modifier ?? ''
+      }`,
     ),
   )
 }

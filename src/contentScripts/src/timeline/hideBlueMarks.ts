@@ -1,5 +1,6 @@
 import {ExtOptions, logTweetRemoved} from '~/logic'
 import {getNames, hideTweet, queryTweets} from './utils'
+import {getAccountInfo} from './timelineData'
 
 export const hideBlueMarks = async (selector: string, options: ExtOptions) => {
   const tweets = queryTweets(
@@ -11,12 +12,22 @@ export const hideBlueMarks = async (selector: string, options: ExtOptions) => {
     // userName: Eunjae lee
     // screenName: @eunjae-lee
     const {screenName, userName} = getNames(tweet)
+    const accountInfo = getAccountInfo(screenName)
     if (screenName && userName && !options.allowedUsernames[screenName]) {
-      hideTweet(tweet)
-      removedNames.push({
-        userName,
-        screenName,
-      })
+      if (options.hideBlueMarksExceptFollower && accountInfo?.followedBy) {
+        // this account is allowed
+      } else if (
+        options.hideBlueMarksExceptFollowing &&
+        accountInfo?.following
+      ) {
+        // this account is allowed
+      } else {
+        hideTweet(tweet)
+        removedNames.push({
+          userName,
+          screenName,
+        })
+      }
     }
   }
   await logTweetRemoved(removedNames)
