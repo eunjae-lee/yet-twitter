@@ -29,32 +29,49 @@ const storeTimelineData = (json: any) => {
     .filter((instruction: any) => instruction.type === 'TimelineAddEntries')
     .forEach((instruction: any) => {
       instruction.entries.forEach((entry: any) => {
-        storeTimelineEntry(entry)
+        try {
+          storeTimelineEntry(entry)
+        } catch (err) {}
       })
     })
 }
 
 const storeTimelineEntry = (entry: TweetEntry) => {
-  const legacy =
-    entry.content.itemContent.tweet_results.result.core.user_results.result
-      .legacy
-  const {
-    followed_by,
-    following,
-    screen_name,
-    verified,
-    description,
-    name,
-    created_at,
-  } = legacy
+  const storeItemContent = (
+    itemContent: TweetEntry['content']['itemContent'],
+  ) => {
+    const legacy =
+      itemContent.tweet_results.result.core.user_results.result.legacy
+    const {
+      followed_by,
+      following,
+      screen_name,
+      verified,
+      description,
+      name,
+      created_at,
+    } = legacy
 
-  accounts[`@${screen_name}`] = {
-    followedBy: followed_by,
-    following,
-    verified,
-    description,
-    userName: name,
-    createdAt: created_at, // "Thu Sep 06 15:57:28 +0000 2018"
+    accounts[`@${screen_name}`] = {
+      followedBy: followed_by,
+      following,
+      verified,
+      description,
+      userName: name,
+      createdAt: created_at, // "Thu Sep 06 15:57:28 +0000 2018"
+    }
+  }
+
+  if (entry.content.itemContent) {
+    storeItemContent(entry.content.itemContent)
+    // @ts-ignore
+  } else if (Array.isArray(entry.content.items)) {
+    // @ts-ignore
+    entry.content.items.forEach((item) => {
+      if (item.item.itemContent) {
+        storeItemContent(item.item.itemContent)
+      }
+    })
   }
 }
 
