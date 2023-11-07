@@ -5,7 +5,6 @@ const messages = {
     hide_tweets_with_blue_mark: '블루 마크 달린 트윗 숨기기',
     hide_tweets_with_blue_mark_except_following: '내 팔로잉은 허용',
     hide_tweets_with_blue_mark_except_follower: '내 팔로워는 허용',
-    stats_of_hidden_tweets_with_blue_mark: '블루 마크 달린 트윗',
     view: '보기',
     hide: '숨기기',
     view_stats: '통계 보기',
@@ -23,7 +22,7 @@ const messages = {
     view_list: '목록 보기',
 
     none: '없음',
-    muted_accounts: '뮤트 된 계정',
+    muted_accounts: '임시 뮤트 된 계정',
     unmute: '뮤트 풀기',
     click_to_unmute: '뮤트를 풀려면 버튼을 누르세요.',
 
@@ -36,7 +35,6 @@ const messages = {
     hide_tweets_with_blue_mark: 'Hide Tweets with Blue Mark',
     hide_tweets_with_blue_mark_except_following: 'Allow my followings',
     hide_tweets_with_blue_mark_except_follower: 'Allow my followers',
-    stats_of_hidden_tweets_with_blue_mark: 'Hidden Tweets w/ Blue Mark',
     view: 'View',
     hide: 'Hide',
     view_stats: 'View Stats',
@@ -54,7 +52,7 @@ const messages = {
     view_list: 'View List',
 
     none: 'none',
-    muted_accounts: 'Muted Accounts',
+    muted_accounts: 'Temporarily Muted Accounts',
     unmute: 'Unmute',
     click_to_unmute: 'Click the button to unmute.',
 

@@ -7,7 +7,7 @@ defineProps<{
 
 <template>
   <section>
-    <h2 class="flex items-center justify-between">
+    <h2 class="flex items-center justify-between gap-4">
       <span>{{ title }}</span>
       <button class="btn btn-xs" @click="viewing = !viewing">
         {{ viewing ? $t('hide') : $t('view') }}
