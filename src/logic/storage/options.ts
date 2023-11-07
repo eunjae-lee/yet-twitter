@@ -9,7 +9,7 @@ export const DEFAULT_OPTIONS = {
   hideRepliesFromBlockedAccounts: true,
 
   // Timeline
-  hideBlueMarks: false,
+  hideBlueMarks: true,
   hideBlueMarksExceptFollower: true,
   hideBlueMarksExceptFollowing: true,
 
