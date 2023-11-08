@@ -3,11 +3,13 @@ const accounts: {
     userName: string
     following: boolean
     followedBy: boolean
-    verified: boolean
+    blueVerified: boolean
     description: string
     createdAt: string
   }
 } = {}
+
+export const dumpAccountInfo = () => console.log({accounts})
 
 export const getAccountInfo = (screenName?: string) =>
   screenName ? accounts[screenName] : undefined
@@ -37,29 +39,30 @@ const storeTimelineData = (json: any) => {
 }
 
 const storeTimelineEntry = (entry: TweetEntry) => {
-  const storeItemContent = (
-    itemContent: TweetEntry['content']['itemContent'],
-  ) => {
-    const legacy =
-      itemContent.tweet_results.result.core.user_results.result.legacy
-    const {
-      followed_by,
-      following,
-      screen_name,
-      verified,
-      description,
-      name,
-      created_at,
-    } = legacy
+  const storeItemContent = (itemContent: any) => {
+    try {
+      const core =
+        itemContent.tweet_results.result.core ??
+        itemContent.tweet_results.result.tweet?.core
+      const result = core.user_results.result
+      const {
+        followed_by,
+        following,
+        screen_name,
+        description,
+        name,
+        created_at,
+      } = result.legacy
 
-    accounts[`@${screen_name}`] = {
-      followedBy: followed_by,
-      following,
-      verified,
-      description,
-      userName: name,
-      createdAt: created_at, // "Thu Sep 06 15:57:28 +0000 2018"
-    }
+      accounts[`@${screen_name}`] = {
+        followedBy: followed_by,
+        following,
+        blueVerified: result.is_blue_verified,
+        description,
+        userName: name,
+        createdAt: created_at, // "Thu Sep 06 15:57:28 +0000 2018"
+      }
+    } catch (err) {}
   }
 
   if (entry.content.itemContent) {
