@@ -41,48 +41,50 @@ const allowUser = (screenName: string) => {
 </script>
 
 <template>
-  <div class="form-control">
-    <label class="space-x-2 cursor-pointer label">
-      <span class="flex items-center gap-1 label-text">
-        <span>{{ $t('hide_tweets_with_blue_mark') }}</span>
-        <span class="verified">
-          <IconVerified />
+  <div class="mx-2">
+    <div class="form-control">
+      <label class="space-x-2 cursor-pointer label">
+        <span class="flex items-center gap-1 label-text">
+          <span>{{ $t('hide_tweets_with_blue_mark') }}</span>
+          <span class="verified">
+            <IconVerified />
+          </span>
         </span>
-      </span>
-      <input
-        v-model="extOptions.hideBlueMarks"
-        type="checkbox"
-        class="toggle toggle-primary"
-      />
-    </label>
-  </div>
+        <input
+          v-model="extOptions.hideBlueMarks"
+          type="checkbox"
+          class="toggle toggle-primary"
+        />
+      </label>
+    </div>
 
-  <div class="ml-2 form-control">
-    <label class="space-x-2 cursor-pointer label">
-      <span class="flex items-center gap-1 label-text">
-        <IconCornerDownRight />
-        <span>{{ $t('hide_tweets_with_blue_mark_except_follower') }}</span>
-      </span>
-      <input
-        v-model="extOptions.hideBlueMarksExceptFollower"
-        type="checkbox"
-        class="toggle toggle-primary"
-      />
-    </label>
-  </div>
+    <div class="ml-2 form-control">
+      <label class="space-x-2 cursor-pointer label">
+        <span class="flex items-center gap-1 label-text">
+          <IconCornerDownRight />
+          <span>{{ $t('hide_tweets_with_blue_mark_except_follower') }}</span>
+        </span>
+        <input
+          v-model="extOptions.hideBlueMarksExceptFollower"
+          type="checkbox"
+          class="toggle toggle-primary"
+        />
+      </label>
+    </div>
 
-  <div class="ml-2 form-control">
-    <label class="space-x-2 cursor-pointer label">
-      <span class="flex items-center gap-1 label-text">
-        <IconCornerDownRight />
-        <span>{{ $t('hide_tweets_with_blue_mark_except_following') }}</span>
-      </span>
-      <input
-        v-model="extOptions.hideBlueMarksExceptFollowing"
-        type="checkbox"
-        class="toggle toggle-primary"
-      />
-    </label>
+    <div class="ml-2 form-control">
+      <label class="space-x-2 cursor-pointer label">
+        <span class="flex items-center gap-1 label-text">
+          <IconCornerDownRight />
+          <span>{{ $t('hide_tweets_with_blue_mark_except_following') }}</span>
+        </span>
+        <input
+          v-model="extOptions.hideBlueMarksExceptFollowing"
+          type="checkbox"
+          class="toggle toggle-primary"
+        />
+      </label>
+    </div>
   </div>
 
   <div class="mt-4 shadow-xl card w-96 bg-base-200">

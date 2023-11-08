@@ -9,9 +9,11 @@ import {useStorageAsync} from '@vueuse/core'
 import {
   DEFAULT_OPTIONS,
   KEY_MUTE_ACCOUNTS,
+  KEY_MUTE_BIO,
   KEY_OPTIONS,
   KEY_STATS_FOR_TWEETS,
   MutedAccount,
+  MutedBioStorage,
   TweetRemovedStat,
 } from '~/logic'
 
@@ -54,3 +56,6 @@ export const useExtensionOptions = () =>
 
 export const useMutedAccounts = () =>
   useStorageLocal<Record<string, MutedAccount>>(KEY_MUTE_ACCOUNTS, {})
+
+export const useMutedBioKeywords = () =>
+  useStorageLocal<MutedBioStorage>(KEY_MUTE_BIO, {})
