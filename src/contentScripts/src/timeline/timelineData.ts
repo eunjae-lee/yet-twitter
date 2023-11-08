@@ -9,8 +9,6 @@ const accounts: {
   }
 } = {}
 
-export const dumpAccountInfo = () => console.log({accounts})
-
 export const getAccountInfo = (screenName?: string) =>
   screenName ? accounts[screenName] : undefined
 

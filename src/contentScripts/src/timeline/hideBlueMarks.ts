@@ -1,9 +1,8 @@
 import {ExtOptions, logTweetRemoved} from '~/logic'
 import {getNames, hideTweet, queryTweets} from './utils'
-import {dumpAccountInfo, getAccountInfo} from './timelineData'
+import {getAccountInfo} from './timelineData'
 
 export const hideBlueMarks = async (selector: string, options: ExtOptions) => {
-  dumpAccountInfo()
   const tweets = queryTweets(selector)
   const removedNames: Array<{userName: string; screenName: string}> = []
   for (const tweet of tweets) {
