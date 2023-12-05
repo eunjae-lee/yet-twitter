@@ -13,6 +13,7 @@ const rules = [
   },
 ]
 
+console.log('💡 injected.js')
 ;(function (xhr) {
   var XHR = XMLHttpRequest.prototype
 
@@ -35,6 +36,7 @@ const rules = [
   }
 
   XHR.send = function (postData) {
+    console.log('💡 XHR: patched send')
     this.addEventListener('load', function () {
       var myUrl = this._url ? this._url.toLowerCase() : this._url
       if (myUrl) {
@@ -72,6 +74,10 @@ const rules = [
 
             rules.forEach((rule) => {
               if (rule.check(this._url)) {
+                console.log('💡 rule matched', {
+                  url: this._url,
+                  classNames: rule.classNames,
+                })
                 const script = document.createElement('script')
                 script.setAttribute('type', 'application/json')
                 script.setAttribute('charset', 'utf-8')
@@ -89,6 +95,7 @@ const rules = [
             // console.log('💡', responseHeaders)
             // console.log('💡', JSON.parse(arr))
           } catch (err) {
+            console.log('💡 error caught', err)
             // console.log('Error in responseType try catch')
             // console.log(err)
           }
