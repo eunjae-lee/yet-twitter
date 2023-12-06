@@ -13,7 +13,6 @@ const rules = [
   },
 ]
 
-console.log('💡 injected.js')
 ;(function (xhr) {
   var XHR = XMLHttpRequest.prototype
 
@@ -36,7 +35,6 @@ console.log('💡 injected.js')
   }
 
   XHR.send = function (postData) {
-    console.log('💡 XHR: patched send')
     this.addEventListener('load', function () {
       var myUrl = this._url ? this._url.toLowerCase() : this._url
       if (myUrl) {
@@ -74,10 +72,6 @@ console.log('💡 injected.js')
 
             rules.forEach((rule) => {
               if (rule.check(this._url)) {
-                console.log('💡 rule matched', {
-                  url: this._url,
-                  classNames: rule.classNames,
-                })
                 const script = document.createElement('script')
                 script.setAttribute('type', 'application/json')
                 script.setAttribute('charset', 'utf-8')
