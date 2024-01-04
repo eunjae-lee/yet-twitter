@@ -25,14 +25,18 @@ export const muteAccount = async ({
     await storageLocal.setItem(KEY_MUTE_ACCOUNTS, JSON.stringify({}))
     mutes = {}
   }
+  const muteUntil = new Date(
+    new Date().getTime() + 1000 * 60 * 60 * 24 * days,
+  ).toISOString()
   mutes[screenName] = {
     userName,
     days,
-    muteUntil: new Date(
-      new Date().getTime() + 1000 * 60 * 60 * 24 * days,
-    ).toISOString(),
+    muteUntil,
   }
   await storageLocal.setItem(KEY_MUTE_ACCOUNTS, JSON.stringify(mutes))
+  alert(
+    `This account will be muted until ${new Date(muteUntil).toLocaleString()}.`,
+  )
 }
 
 export const readMutedAccounts = async () => {
