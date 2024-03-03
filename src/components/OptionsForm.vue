@@ -60,6 +60,10 @@ watch(optionsLoaded, (newValue) => {
       <HideBlueMarkStats />
     </CollapsableSection>
 
+    <CollapsableSection :title="$t('chain_block')">
+      <ChainBlockDesc />
+    </CollapsableSection>
+
     <CollapsableSection :title="$t('mute_bio_keyword')">
       <BioKeywordMute />
     </CollapsableSection>

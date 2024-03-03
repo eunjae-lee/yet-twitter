@@ -30,6 +30,7 @@ const messages = {
     view_list: '목록 보기',
     view_stats: '통계 보기',
     view: '보기',
+    chain_block: '체인 블락',
   },
   en: {
     add: 'Add',
@@ -62,6 +63,7 @@ const messages = {
     view_list: 'View List',
     view_stats: 'View Stats',
     view: 'View',
+    chain_block: 'Chained Block',
   },
 }
 
