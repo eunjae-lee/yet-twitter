@@ -2,6 +2,12 @@ import {revertTwitterLogo} from './revertTwitterLogo'
 import {readOptionAsync} from '~/logic'
 import {watchTimeline} from './timeline'
 import {injectCSS, injectDefaultCSS} from './injectCSS'
+import {
+  CHAIN_BLOCK_STOP_URL,
+  processUsersToBlock,
+  showChainBlockButton,
+  stopChainBlock,
+} from './user/chainBlock'
 
 // works for
 // - timeline: /home
@@ -11,6 +17,23 @@ export async function onLoad() {
   if (!['twitter.com', 'x.com'].includes(window.location.host)) {
     return
   }
+
+  // chain block - begin
+  if (location.href === CHAIN_BLOCK_STOP_URL) {
+    await stopChainBlock()
+  }
+  if (location.href.includes('/i/lists/')) {
+    showChainBlockButton()
+  }
+  ;(window as any).navigation.addEventListener('navigate', (event: any) => {
+    if (event.destination.url.includes('/i/lists/')) {
+      setTimeout(() => {
+        showChainBlockButton()
+      }, 200)
+    }
+  })
+  processUsersToBlock()
+  // chain block - end
 
   injectDefaultCSS()
 

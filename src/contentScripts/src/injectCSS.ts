@@ -28,6 +28,27 @@ export const injectDefaultCSS = () => {
     opacity: 1;
     color: #4a99e9;
   }
+
+  .yet-twitter-block-btn-wrapper {
+    padding: 1rem 1rem;
+    display: flex;
+    justify-content: end;
+  }
+  .yet-twitter-block-btn {
+    background-color: rgb(239, 243, 244, 0);
+    border-radius: 9999px;
+    border-width: 0;
+    color: rgb(239, 243, 244);
+    font-weight: bold;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    opacity: 0.5;
+  }
+  .yet-twitter-block-btn:hover {
+    background-color: rgb(239, 243, 244, 0.1);
+    opacity: 1;
+  }
   `
   injectCSS(css)
 }
