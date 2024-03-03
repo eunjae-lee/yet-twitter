@@ -1,5 +1,7 @@
+import {getText} from '~/i18n'
 import {storageLocal} from '~/composables/useStorageLocal'
 import {waitForElementToExist} from '../wait'
+import {get} from 'http'
 
 const KEY_USERS_TO_BLOCK = 'yet-twitter-users-to-block'
 export const CHAIN_BLOCK_STOP_URL = 'https://twitter.com/?stopChainBlock=true'
@@ -23,23 +25,16 @@ export async function showChainBlockButton() {
   const buttonWrapper = document.createElement('div')
   buttonWrapper.className = 'yet-twitter-block-btn-wrapper'
   buttonWrapper.innerHTML = `
-    <button type="button" class="yet-twitter-block-btn">Block All Users</button>
+    <button type="button" class="yet-twitter-block-btn">${getText(
+      'block_all_users',
+    )}</button>
   `
   container!.append(buttonWrapper)
 
   buttonWrapper.querySelector('button')?.addEventListener('click', () => {
-    if (confirm("Once you click 'OK', it will block all users in this list.")) {
-      if (
-        confirm(
-          'To avoid Twitter rate limit, it runs intentionally very slowly (5 seconds per user). Are you sure?',
-        )
-      ) {
-        if (
-          prompt(
-            'Copy the following URL, and open it whenever you want to stop the process. After copying the URL, hit the OK button.',
-            CHAIN_BLOCK_STOP_URL,
-          )
-        ) {
+    if (confirm(getText('chain_block_desc'))) {
+      if (confirm(getText('chain_block_rate_limit_desc'))) {
+        if (prompt(getText('chain_block_stop_desc'), CHAIN_BLOCK_STOP_URL)) {
           // we copy it to the clipboard anyway
           // but let's make sure they read the text and understand the procedure
           navigator.clipboard.writeText(CHAIN_BLOCK_STOP_URL)
@@ -48,7 +43,7 @@ export async function showChainBlockButton() {
             processUsersToBlock()
           })
         } else {
-          alert('Cancelled.')
+          alert(getText('cancelled'))
         }
       }
     }
@@ -114,9 +109,11 @@ async function wait(delay: number) {
 
 export async function processUsersToBlock() {
   const usersToBlock = await storageLocal.getParsedItem(KEY_USERS_TO_BLOCK)
-  console.log('💡 processUsersToBlock', usersToBlock?.length)
   if (!usersToBlock || usersToBlock.length === 0) {
     return
+  }
+  if (usersToBlock?.length > 0) {
+    console.log('💡 remaining users to block', usersToBlock?.length)
   }
   blockUser(usersToBlock[0])
 }
