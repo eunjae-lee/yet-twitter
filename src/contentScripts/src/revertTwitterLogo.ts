@@ -8,6 +8,10 @@ export const revertTwitterLogo = async () => {
       return
     }
     a?.querySelector('svg')?.remove()
+    if (document.querySelector('.yet-twitter-logo')) {
+      return
+    }
+
     const logoContainer = a.querySelector('div')
     if (logoContainer) {
       // LogoContainer.style.color = '#289fed'
@@ -16,6 +20,7 @@ export const revertTwitterLogo = async () => {
       //   </svg>
       //   `
       const img = document.createElement('img')
+      img.className = 'yet-twitter-logo'
       img.style.width = '32px'
       img.src =
         'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAA1CAYAAADxhu2sAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAUGSURBVHgB3ZpLcttGEIb/AVmJsrP8SFVWQhZx5PJGPkGoE4g+QYgTSDoByRNYPgHoE0Q5gZAThF64RK88Xse05B2dMmfcjeEDJN4kAD6+KqlAYPDonpnunu4R2GJs9+7BAXCihTqDFg0L2tbAA3NVSPpHf+oNUPMGzqHECghsIRPBzwXUxVzgVHqA1U1TRODZX26dR1fWcoOn7l0TG+S5e3dyAPUv9Wwnh/BMi+65OXY/taIusuDH7l37J6gP5tnWNZ9fGAHmZuGSJjukyS4q5qn7qVmj9+cUPALz/Sw0CdzSEGeAbgQa9AbOI4cPlhQwJO3ADj4EFcE9P/Z7vijYRmg7dBa4p95/MZ0qsynwG30AZsIzqsNDBhVA77FJ+L9QKGHh/bPQl0E7UZ8fqIYONfeVgLJHgoB+pReUXxaKjOSTHh+RXA32LrMp8MwdXtFHnMfc2RvBupTO4T0KZm53ykZRJ9Y9OvjD2ANNHa5fz6YA/UgyPC22zDxUUTjWnygZnvf0njZ7CR7VE4Mov6LWsXI8x6abPxRpF4xCF6xzKUR4FUkKOeURHVCAH1llgO3CkBXRwNqMG6geycKHvADpSSI7tgk6hu4600JAnKBaZFB4JqCAmof8tMy08BXRQE6UEEeoCJoG/WXhmaVA6PPNmnNS0v3drIuTAt6XCS1E/33r4Yuoa/XgD/LHf5OmGlgd27g0xcJ5/DwLlvfOOexHN1cfq1iPGS8QzYICfoTV+wrVXj8WZ9jPokERHscY9AHCI1f7loahN6LhyBaYbMC9xmYJqf93d3hBJ1+hZKa9Uoyy014mvEHr4WnUpVAc8J7WyPRZb1AyLHglwvsvi/dwMwU8o6Xo1KUdoHbBQxZ7Ain6S9y1QCiMpnFpn29GGPO6/JKM2GvsAZmNoIHdkvCN15ZmzHJDHdmPu2bNG4k+9hTyPrEjIDAFTI5sHxmhnj4CTOS2P4YvgEzKYyy5QVW6+6sa4Qdf8SwoYOA87u2fLUge1Vb4xDcHe4SGSuzQkALeOT/3KSa4xB7A/p+SoF5Sm8iUmAmHVeWFkaKhjkz1bLE5QdJchwzIS/hr/N2El+PpbVIw64Nxh5qWnr0tGEnlr1/TGiVmhZ+bahFR69CUONUCV9gdvCyN6kkXFRQXLCZKsCA2nb3IhZXJhiWOAJI3dQ5tKb2sGyYSFXAAi4e8xM5hZfZgiQro+zG02rXAqJdnu0xqacwEEjsTE8g8vc9kqg1yTLAbStDdQc7NUrlSPpw31BCcMbaxfcy2veQhT3UYt87jay4vTUaDxPYg8w79KSsn/cx2s3ETgur7uvzyVhzLe35WuH995ruxyi+oLFMj4eNLb+nkmgJx/GDq/JVsqJpiUt1jZx3hJ89ZHVMS1+0qKrxBWHgqup6uK/zkWfmYbzXV5BF01RscGBlV51+VTArgVaHyt9GFdlxWCxU5R1q8LHK3mqDS9QUfkCUNPFTZ9O+ILtvU0yeVFTFjMPNddW+dJ4Uvx+umIMIJDxWR8NDY+AqYel1r4VCQI1ECsylw7P7XgKi1N+nTFyDBocfdtKTm2q9ZPsGKEKJ2rrVuYhNUJPjsdXEXOBcooJqT7bM2Sv0KX+h/qIZ3VcZ23MRXZ2k0SYzSyLDOaGQs7Spf6bWS8msepdjeavx/PXB+kdgQKwVCJhb4dsJewv8TOKKSWmjLi4nTqTSt8dFsxNSSK7VV93IS3wFVcA89WYQr3QAAAABJRU5ErkJggg=='
