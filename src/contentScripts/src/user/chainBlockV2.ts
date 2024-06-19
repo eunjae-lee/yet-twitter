@@ -67,17 +67,7 @@ const attachChainBlockButton = () => {
       `div[aria-label="${getText(
         'aria_label_community_member_timeline',
       )}"] nav[aria-label="${getText('aria_label_community_members')}"]`,
-      (elem) =>
-        attach(
-          elem,
-          document.querySelector(
-            `div[aria-label="${getText(
-              'aria_label_community_member_timeline',
-            )}"] nav[aria-label="${getText(
-              'aria_label_community_members',
-            )}"] + div`,
-          ) ?? undefined,
-        ),
+      (elem) => attach(elem, document.body.parentElement!),
     )
   }
 }
