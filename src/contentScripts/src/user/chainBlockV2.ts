@@ -59,17 +59,27 @@ const attachChainBlockButton = () => {
     attach,
   )
 
-  if (
-    location.href.startsWith('https://x.com/i/communities/') &&
-    location.href.endsWith('/members')
-  ) {
-    watchSelector(
-      `div[aria-label="${getText(
-        'aria_label_community_member_timeline',
-      )}"] nav[aria-label="${getText('aria_label_community_members')}"]`,
-      (elem) => attach(elem, document.body.parentElement!),
-    )
-  }
+  watchSelector(
+    `div[aria-label="${getText(
+      'aria_label_community_member_timeline',
+    )}"] nav[aria-label="${getText('aria_label_community_members')}"]`,
+    (elem) => attach(elem, document.body.parentElement!),
+  )
+  // ;(window as any).navigation.addEventListener('navigate', (event: any) => {
+  //   setTimeout(() => {
+  //     if (
+  //       event.destination.url.startsWith('https://x.com/i/communities/') &&
+  //       event.destination.url.endsWith('/members')
+  //     ) {
+  //       watchSelector(
+  //         `div[aria-label="${getText(
+  //           'aria_label_community_member_timeline',
+  //         )}"] nav[aria-label="${getText('aria_label_community_members')}"]`,
+  //         (elem) => attach(elem, document.body.parentElement!),
+  //       )
+  //     }
+  //   }, 1000)
+  // })
 }
 
 const requestToCollectUsers = async (
