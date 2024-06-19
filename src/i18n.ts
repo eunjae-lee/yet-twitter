@@ -51,6 +51,9 @@ const messages = {
     aria_label_followers: '타임라인: 팔로워',
     aria_label_followers_you_know: '타임라인: 내가 아는 팔로워',
     aria_label_verified_followers: '타임라인: 인증된 팔로워',
+    aria_label_subscriptions: '타임라인: 구독.',
+    aria_label_community_member_timeline: '홈 타임라인',
+    aria_label_community_members: '멤버',
   },
   en: {
     add: 'Add',
@@ -105,6 +108,9 @@ const messages = {
     aria_label_followers: 'Timeline: Followers',
     aria_label_followers_you_know: 'Timeline: Followers you know',
     aria_label_verified_followers: 'Timeline: Verified Followers',
+    aria_label_subscriptions: 'Timeline: Subscriptions',
+    aria_label_community_member_timeline: 'Home timeline',
+    aria_label_community_members: 'Members',
   },
 }
 

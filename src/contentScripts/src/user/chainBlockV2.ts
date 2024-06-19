@@ -54,18 +54,28 @@ const attachChainBlockButton = () => {
     `div[aria-label="${getText('aria_label_verified_followers')}"]`,
     attach,
   )
+  watchSelector(
+    `div[aria-label="${getText('aria_label_subscriptions')}"]`,
+    attach,
+  )
 
   if (
     location.href.startsWith('https://x.com/i/communities/') &&
     location.href.endsWith('/members')
   ) {
     watchSelector(
-      'div[aria-label="Home timeline"] nav[aria-label="Members"]',
+      `div[aria-label="${getText(
+        'aria_label_community_member_timeline',
+      )}"] nav[aria-label="${getText('aria_label_community_members')}"]`,
       (elem) =>
         attach(
           elem,
           document.querySelector(
-            'div[aria-label="Home timeline"] nav[aria-label="Members"] + div',
+            `div[aria-label="${getText(
+              'aria_label_community_member_timeline',
+            )}"] nav[aria-label="${getText(
+              'aria_label_community_members',
+            )}"] + div`,
           ) ?? undefined,
         ),
     )
