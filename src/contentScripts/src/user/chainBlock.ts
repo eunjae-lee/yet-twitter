@@ -1,7 +1,6 @@
 import {getText} from '~/i18n'
 import {storageLocal} from '~/composables/useStorageLocal'
 import {waitForElementToExist} from '../wait'
-import {get} from 'http'
 
 const KEY_USERS_TO_BLOCK = 'yet-twitter-users-to-block'
 export const CHAIN_BLOCK_STOP_URL = 'https://twitter.com/?stopChainBlock=true'
@@ -56,7 +55,9 @@ async function collectUsersToBlock() {
   ) as HTMLElement
   memberListButton.click()
   await waitForElementToExist(
-    "div[aria-label='Timeline: List members'] div[data-testid=cellInnerDiv]",
+    `div[aria-label='${getText(
+      'aria_label_list_members',
+    )}'] div[data-testid=cellInnerDiv]`,
   )
 
   const set = new Set()

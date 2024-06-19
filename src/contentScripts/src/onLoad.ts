@@ -2,12 +2,8 @@ import {revertTwitterLogo} from './revertTwitterLogo'
 import {readOptionAsync} from '~/logic'
 import {watchTimeline} from './timeline'
 import {injectCSS, injectDefaultCSS} from './injectCSS'
-import {
-  CHAIN_BLOCK_STOP_URL,
-  processUsersToBlock,
-  showChainBlockButton,
-  stopChainBlock,
-} from './user/chainBlock'
+import {chainBlock} from './user/chainBlockV2'
+import {getText} from '~/i18n'
 
 // works for
 // - timeline: /home
@@ -18,22 +14,7 @@ export async function onLoad() {
     return
   }
 
-  // chain block - begin
-  if (location.href === CHAIN_BLOCK_STOP_URL) {
-    await stopChainBlock()
-  }
-  if (location.href.includes('/i/lists/')) {
-    showChainBlockButton()
-  }
-  ;(window as any).navigation.addEventListener('navigate', (event: any) => {
-    if (event.destination.url.includes('/i/lists/')) {
-      setTimeout(() => {
-        showChainBlockButton()
-      }, 200)
-    }
-  })
-  processUsersToBlock()
-  // chain block - end
+  chainBlock()
 
   injectDefaultCSS()
 
@@ -48,7 +29,7 @@ export async function onLoad() {
 
   // Console.info('[vitesse-webext] Hello world from content script')
   // eslint-disable-next-line @typescript-eslint/no-floating-promises
-  watchTimeline('div[aria-label="Timeline: Your Home Timeline"]')
+  watchTimeline(`div[aria-label="${getText('aria_label_your_home_timeline')}"]`)
   // Array.from(document.querySelectorAll('a[href="/home"][role="tab"]')).forEach(
   //   (tab) => {
   //     tab.addEventListener('click', watch)

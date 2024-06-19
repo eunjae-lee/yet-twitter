@@ -40,7 +40,7 @@ export const hideTweet = (tweet: HTMLElement) => {
 
 export const watchSelector = async (
   selector: string,
-  callback: Function,
+  callback: (element: Element | null) => void,
   debounceMs = 100,
 ) => {
   await waitForElementToExist(selector)
@@ -59,9 +59,26 @@ export const watchSelector = async (
         return
       }
 
-      callback()
+      callback(document.querySelector(selector))
     }, debounceMs),
   )
 
   resizeObserver.observe(document.querySelector(selector)!)
+}
+
+export function findParentElement(startingElement: Element, selector: string) {
+  let currentElement: Element | null = startingElement
+  while (currentElement) {
+    if (currentElement.matches(selector)) {
+      return currentElement
+    }
+    currentElement = currentElement.parentElement
+  }
+  return null
+}
+
+export async function wait(delay: number) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, delay)
+  })
 }

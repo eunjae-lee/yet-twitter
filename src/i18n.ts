@@ -35,9 +35,22 @@ const messages = {
     chain_block_desc: "'확인'을 누르시면 이 리스트의 모든 유저가 차단됩니다.",
     chain_block_rate_limit_desc:
       '트위터의 API 사용량 제한을 피하기 위해 의도적으로 아주 느리게 실행됩니다 (5초에 한 명). 계속하시겠습니까?',
+    chain_block_gather_desc:
+      '리스트 내의 모든 계정을 수집합니다. 이미 팔로잉 혹은 팔로워 관계인 계정은 제외됩니다. 잠시만 기다려주세요.',
+    chain_block_rate_limit_desc_v2:
+      '트위터의 API 사용량 제한을 피하기 위해 의도적으로 아주 느리게 실행하는 게 좋습니다. 몇 초에 한 명씩 차단하시겠습니까? (예: 10)',
+    invalid_number: '숫자를 입력해 주세요.',
+    chain_block_stop_desc_v2: '차단을 멈추시겠습니까?',
     chain_block_stop_desc:
       '아래 URL 을 복사해두셨다가, 체인 블락을 멈추고 싶으시면 해당 주소를 열어주세요. 일단 주소를 복사하신 후에, "확인" 버튼을 눌러주세요.',
     cancelled: '취소되었습니다.',
+
+    aria_label_your_home_timeline: '홈 타임라인',
+    aria_label_list_members: '타임라인: 리스트 멤버',
+    aria_label_following: '타임라인: 팔로잉',
+    aria_label_followers: '타임라인: 팔로워',
+    aria_label_followers_you_know: '타임라인: 내가 아는 팔로워',
+    aria_label_verified_followers: '타임라인: 인증된 팔로워',
   },
   en: {
     add: 'Add',
@@ -76,9 +89,22 @@ const messages = {
       "Once you click 'OK', it will block all users in this list.",
     chain_block_rate_limit_desc:
       'To avoid Twitter rate limit, it runs intentionally very slowly (5 seconds per user). Are you sure?',
+    chain_block_gather_desc:
+      'It will gather all accounts in the list. Followings & Followers are excluded. Please wait.',
+    chain_block_rate_limit_desc_v2:
+      'To avoid Twitter rate limit, it runs intentionally very slowly. How many seconds per account would you like to block? (e.g., 10)',
+    chain_block_stop_desc_v2: 'Would you like to stop blocking?',
     chain_block_stop_desc:
       'Copy the following URL, and open it whenever you want to stop the process. After copying the URL, hit the OK button.',
+    invalid_number: 'Please enter a number.',
     cancelled: 'Cancelled.',
+
+    aria_label_your_home_timeline: 'Timeline: Your Home Timeline',
+    aria_label_list_members: 'Timeline: List members',
+    aria_label_following: 'Timeline: Following',
+    aria_label_followers: 'Timeline: Followers',
+    aria_label_followers_you_know: 'Timeline: Followers you know',
+    aria_label_verified_followers: 'Timeline: Verified Followers',
   },
 }
 
@@ -87,9 +113,7 @@ type Lang = keyof typeof messages
 export type MessageKeys = keyof (typeof messages)['ko']
 
 export const isKorean = () => {
-  // @ts-ignore
-  const lang = navigator.language || navigator.userLanguage
-  return lang === 'ko' || lang === 'ko-KR'
+  return document.body.parentElement?.getAttribute('lang') === 'ko'
 }
 
 export const getLang = (): Lang => (isKorean() ? 'ko' : 'en')

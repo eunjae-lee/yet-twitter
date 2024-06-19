@@ -29,25 +29,26 @@ export const injectDefaultCSS = () => {
     color: #4a99e9;
   }
 
-  .yet-twitter-block-btn-wrapper {
-    padding: 1rem 1rem;
-    display: flex;
-    justify-content: end;
+  .yet-twitter-block-btn-wrapper,
+  .yet-twitter-chain-block-banner {
+    padding: 1rem;
   }
-  .yet-twitter-block-btn {
-    background-color: rgb(239, 243, 244, 0);
+  .yet-twitter-block-btn,
+  .yet-twitter-chain-block-banner-btn {
+    border-color: rgba(0, 0, 0, 0);
+    background-color: rgb(239, 243, 244);
     border-radius: 9999px;
     border-width: 0;
-    color: rgb(239, 243, 244);
+    color: rgb(15, 20, 25);
+    font-family: "TwitterChirp";
     font-weight: bold;
-    font-size: 1rem;
+    font-size: 14px;
     padding: 0.5rem 1rem;
     cursor: pointer;
-    opacity: 0.5;
   }
-  .yet-twitter-block-btn:hover {
-    background-color: rgb(239, 243, 244, 0.1);
-    opacity: 1;
+  .yet-twitter-block-btn:hover,
+  .yet-twitter-chain-block-banner-btn:hover {
+    opacity: 0.9;
   }
   `
   injectCSS(css)
