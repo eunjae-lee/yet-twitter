@@ -29,6 +29,16 @@ watch(optionsLoaded, (newValue) => {
 
 <template>
   <div class="pt-8 space-y-16" v-if="optionsLoaded">
+    <section class="flex justify-center">
+      <a
+        class="btn btn-outline"
+        href="https://rabbits-build-7a9.craft.me/gCOKO9NO04V5Ig"
+        target="_blank"
+      >
+        {{ $t('view_manual') }}
+      </a>
+    </section>
+
     <section>
       <h2>{{ $t('timeline') }}</h2>
       <div class="form-control">
@@ -58,10 +68,6 @@ watch(optionsLoaded, (newValue) => {
 
     <CollapsableSection :title="$t('hide_tweets_with_blue_mark')">
       <HideBlueMarkStats />
-    </CollapsableSection>
-
-    <CollapsableSection :title="$t('chain_block')">
-      <ChainBlockDesc />
     </CollapsableSection>
 
     <CollapsableSection :title="$t('mute_bio_keyword')">

@@ -30,7 +30,6 @@ const messages = {
     view_list: '목록 보기',
     view_stats: '통계 보기',
     view: '보기',
-    chain_block: '체인 블락',
     block_all_users: '모든 유저 차단하기',
     chain_block_desc: "'확인'을 누르시면 이 리스트의 모든 유저가 차단됩니다.",
     chain_block_rate_limit_desc:
@@ -44,6 +43,8 @@ const messages = {
     chain_block_stop_desc:
       '아래 URL 을 복사해두셨다가, 체인 블락을 멈추고 싶으시면 해당 주소를 열어주세요. 일단 주소를 복사하신 후에, "확인" 버튼을 눌러주세요.',
     cancelled: '취소되었습니다.',
+
+    view_manual: '설명서 보기',
 
     aria_label_your_home_timeline: '홈 타임라인',
     aria_label_list_members: '타임라인: 리스트 멤버',
@@ -86,7 +87,6 @@ const messages = {
     view_list: 'View List',
     view_stats: 'View Stats',
     view: 'View',
-    chain_block: 'Chained Block',
     block_all_users: 'Block All Users',
     chain_block_desc:
       "Once you click 'OK', it will block all users in this list.",
@@ -101,6 +101,8 @@ const messages = {
       'Copy the following URL, and open it whenever you want to stop the process. After copying the URL, hit the OK button.',
     invalid_number: 'Please enter a number.',
     cancelled: 'Cancelled.',
+
+    view_manual: 'View Manual',
 
     aria_label_your_home_timeline: 'Timeline: Your Home Timeline',
     aria_label_list_members: 'Timeline: List members',
