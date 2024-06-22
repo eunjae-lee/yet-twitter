@@ -6,10 +6,12 @@ import {storageLocal} from '~/composables/useStorageLocal'
 import {waitForElementToExist} from '../wait'
 
 const KEY_CHAIN_BLOCK_V2 = 'yet-twitter-chain-block-v2'
+const KEY_CHAIN_MUTE_V2 = 'yet-twitter-chain-mute-v2'
 
 export const chainBlock = async () => {
   attachChainBlockButton()
-  await blockUserIfNeeded()
+  await processUserIfNeeded('block')
+  await processUserIfNeeded('mute')
 }
 
 const attachChainBlockButton = () => {
@@ -19,24 +21,34 @@ const attachChainBlockButton = () => {
     }
     const parent = elem.parentElement
     let blockButtonWrapper = parent.querySelector(
-      '.yet-twitter-block-btn-wrapper',
+      '.yet-twitter-chain-block-btn-wrapper',
     )
     if (blockButtonWrapper) {
       blockButtonWrapper.remove()
     }
     blockButtonWrapper = document.createElement('div')
-    blockButtonWrapper.className = 'yet-twitter-block-btn-wrapper'
+    blockButtonWrapper.className = 'yet-twitter-chain-block-btn-wrapper'
     blockButtonWrapper.innerHTML = `
-    <button type="button" class="yet-twitter-block-btn">${getText(
+    <button type="button" class="yet-twitter-chain-block-btn">${getText(
       'block_all_users',
+    )}</button>
+
+    <button type="button" class="yet-twitter-chain-mute-btn">${getText(
+      'mute_all_users',
     )}</button>
   `
     parent.insertBefore(blockButtonWrapper, elem)
 
     blockButtonWrapper
-      .querySelector('button')
+      .querySelector('.yet-twitter-chain-block-btn')
       ?.addEventListener('click', () => {
-        requestToCollectUsers(elem, scrollContainer)
+        requestToCollectUsers(elem, 'block', scrollContainer)
+      })
+
+    blockButtonWrapper
+      .querySelector('.yet-twitter-chain-mute-btn')
+      ?.addEventListener('click', () => {
+        requestToCollectUsers(elem, 'mute', scrollContainer)
       })
   }
 
@@ -84,6 +96,7 @@ const attachChainBlockButton = () => {
 
 const requestToCollectUsers = async (
   element: Element,
+  type: 'block' | 'mute',
   _scrollContainer?: Element,
 ) => {
   if (!confirm(getText('chain_block_gather_desc'))) {
@@ -94,15 +107,26 @@ const requestToCollectUsers = async (
   if (!scrollContainer) {
     return
   }
-  const users = await collectUsersToBlock(scrollContainer)
+  const users = await collectUsers(scrollContainer)
   const message = isKorean()
-    ? `정말로 ${users.length}명을 차단하시겠습니까?`
-    : `Are you sure you want to block ${users.length} users?`
+    ? `정말로 ${users.length}명을 ${
+        type === 'block' ? '차단' : '뮤트'
+      }하시겠습니까?`
+    : `Are you sure you want to ${type === 'block' ? 'block' : 'mute'} ${
+        users.length
+      } users?`
   if (!confirm(message)) {
     return
   }
 
-  const delayStr = prompt(getText('chain_block_rate_limit_desc_v2'), '10')
+  const delayStr = prompt(
+    getText(
+      type === 'block'
+        ? 'chain_block_rate_limit_desc_v2'
+        : 'chain_mute_rate_limit_desc_v2',
+    ),
+    '10',
+  )
   const delay = parseFloat(delayStr || '10')
   if (isNaN(delay)) {
     alert(getText('invalid_number'))
@@ -118,7 +142,7 @@ const requestToCollectUsers = async (
   }
 
   await storageLocal.setItem(
-    KEY_CHAIN_BLOCK_V2,
+    type === 'block' ? KEY_CHAIN_BLOCK_V2 : KEY_CHAIN_MUTE_V2,
     JSON.stringify({
       users,
       delay,
@@ -127,11 +151,13 @@ const requestToCollectUsers = async (
     }),
   )
 
-  await blockUserIfNeeded()
+  await processUserIfNeeded(type)
 }
 
-const blockUserIfNeeded = async () => {
-  const data = await storageLocal.getParsedItem(KEY_CHAIN_BLOCK_V2)
+const processUserIfNeeded = async (type: 'block' | 'mute') => {
+  const data = await storageLocal.getParsedItem(
+    type === 'block' ? KEY_CHAIN_BLOCK_V2 : KEY_CHAIN_MUTE_V2,
+  )
   if (!data) {
     return
   }
@@ -140,8 +166,12 @@ const blockUserIfNeeded = async () => {
     return
   }
 
-  showBanner(nextIndex, users.length)
-  await blockUser({user: users[nextIndex], delay: parseFloat(delay)})
+  showBanner(type, nextIndex, users.length)
+  if (type === 'block') {
+    await blockUser({user: users[nextIndex], delay: parseFloat(delay)})
+  } else {
+    await muteUser({user: users[nextIndex], delay: parseFloat(delay)})
+  }
 }
 
 const blockUser = async ({user, delay}: {user: string; delay: number}) => {
@@ -154,7 +184,7 @@ const blockUser = async ({user, delay}: {user: string; delay: number}) => {
   )) as HTMLElement
 
   if (isBlocked()) {
-    await increaseNextIndex()
+    await increaseNextIndex('block')
     window.location.href = 'https://x.com/'
     return
   }
@@ -170,7 +200,33 @@ const blockUser = async ({user, delay}: {user: string; delay: number}) => {
   )) as HTMLElement
   confirmButton.click()
   await wait(delay * 1000)
-  await increaseNextIndex()
+  await increaseNextIndex('block')
+  window.location.href = 'https://x.com/'
+}
+
+const muteUser = async ({user, delay}: {user: string; delay: number}) => {
+  if (window.location.href !== `https://x.com/${user}`) {
+    window.location.href = `https://x.com/${user}`
+    return
+  }
+  const menuButton = (await waitForElementToExist(
+    'button[data-testid=userActions]',
+  )) as HTMLElement
+
+  if (isMuted()) {
+    await increaseNextIndex('mute')
+    window.location.href = 'https://x.com/'
+    return
+  }
+
+  menuButton.click()
+
+  const muteButton = (await waitForElementToExist(
+    'div[role=menuitem][data-testid=mute]',
+  )) as HTMLElement
+  muteButton.click()
+  await wait(delay * 1000)
+  await increaseNextIndex('mute')
   window.location.href = 'https://x.com/'
 }
 
@@ -182,11 +238,18 @@ function isBlocked() {
   )
 }
 
-const increaseNextIndex = async () => {
-  const {users, delay, nextIndex, enabled} =
-    await storageLocal.getParsedItem(KEY_CHAIN_BLOCK_V2)
+function isMuted() {
+  return (
+    document.querySelectorAll('button[data-testid="unmuteLink"]').length === 1
+  )
+}
+
+const increaseNextIndex = async (type: 'block' | 'mute') => {
+  const {users, delay, nextIndex, enabled} = await storageLocal.getParsedItem(
+    type === 'block' ? KEY_CHAIN_BLOCK_V2 : KEY_CHAIN_MUTE_V2,
+  )
   await storageLocal.setItem(
-    KEY_CHAIN_BLOCK_V2,
+    type === 'block' ? KEY_CHAIN_BLOCK_V2 : KEY_CHAIN_MUTE_V2,
     JSON.stringify({
       users,
       delay,
@@ -196,7 +259,11 @@ const increaseNextIndex = async () => {
   )
 }
 
-const showBanner = (nextIndex: number, totalCount: number) => {
+const showBanner = (
+  type: 'block' | 'mute',
+  nextIndex: number,
+  totalCount: number,
+) => {
   let banner: HTMLDivElement | null = document.querySelector(
     '.yet-twitter-chain-block-banner',
   )
@@ -211,21 +278,33 @@ const showBanner = (nextIndex: number, totalCount: number) => {
   banner.className = 'yet-twitter-chain-block-banner'
   banner.innerHTML = `
     <button class="yet-twitter-chain-block-banner-btn">
-      Blocking... ${nextIndex + 1}/${totalCount}
+      ${type === 'block' ? 'Blocking' : 'Muting'}... ${
+        nextIndex + 1
+      }/${totalCount}
     </button>
   `
   document.body.appendChild(banner)
   document
     .querySelector('.yet-twitter-chain-block-banner-btn')
     ?.addEventListener('click', async () => {
-      if (confirm(getText('chain_block_stop_desc_v2'))) {
-        await storageLocal.removeItem(KEY_CHAIN_BLOCK_V2)
+      if (
+        confirm(
+          getText(
+            type === 'block'
+              ? 'chain_block_stop_desc_v2'
+              : 'chain_mute_stop_desc_v2',
+          ),
+        )
+      ) {
+        await storageLocal.removeItem(
+          type === 'block' ? KEY_CHAIN_BLOCK_V2 : KEY_CHAIN_MUTE_V2,
+        )
         banner?.remove()
       }
     })
 }
 
-const collectUsersToBlock = async (scrollContainer: Element) => {
+const collectUsers = async (scrollContainer: Element) => {
   scrollContainer.scrollTo({top: 0})
   const set = new Set<string>()
   while (true) {

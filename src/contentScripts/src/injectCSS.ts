@@ -29,11 +29,12 @@ export const injectDefaultCSS = () => {
     color: #4a99e9;
   }
 
-  .yet-twitter-block-btn-wrapper,
+  .yet-twitter-chain-block-btn-wrapper,
   .yet-twitter-chain-block-banner {
     padding: 1rem;
   }
-  .yet-twitter-block-btn,
+  .yet-twitter-chain-block-btn,
+  .yet-twitter-chain-mute-btn,
   .yet-twitter-chain-block-banner-btn {
     border-color: rgba(0, 0, 0, 0);
     background-color: rgb(239, 243, 244);
@@ -46,9 +47,13 @@ export const injectDefaultCSS = () => {
     padding: 0.5rem 1rem;
     cursor: pointer;
   }
-  .yet-twitter-block-btn:hover,
+  .yet-twitter-chain-block-btn:hover,
+  .yet-twitter-chain-mute-btn:hover,
   .yet-twitter-chain-block-banner-btn:hover {
     opacity: 0.9;
+  }
+  .yet-twitter-chain-mute-btn {
+    margin-left: 1rem;
   }
   `
   injectCSS(css)
