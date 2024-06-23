@@ -248,7 +248,7 @@ const muteUser = async ({user, delay}: {user: string; delay: number}) => {
     'button[data-testid=userActions]',
   )) as HTMLElement
 
-  if (isMuted()) {
+  if (isMuted() || isBlocked()) {
     await wait(2000)
     await increaseNextIndex('mute')
     window.location.href = 'https://x.com/'
