@@ -1,5 +1,3 @@
-// TODO: follower & following...
-
 import {getText, isKorean} from '~/i18n'
 import {findParentElement, wait, watchSelector} from '../timeline/utils'
 import {waitForElementToExist} from '../wait'
@@ -44,19 +42,19 @@ const attachChainBlockButton = () => {
     blockButtonWrapper = document.createElement('div')
     blockButtonWrapper.className = 'yet-twitter-chain-block-btn-wrapper'
     blockButtonWrapper.innerHTML = `
-    <button type="button" class="yet-twitter-chain-block-all-btn">${getText(
+    <button type="button" class="yet-twitter-chain-block-btn yet-twitter-chain-block-all-btn">${getText(
       'block_all_users',
     )}</button>
 
-    <button type="button" class="yet-twitter-chain-block-blue-btn">${getText(
+    <button type="button" class="yet-twitter-chain-block-btn yet-twitter-chain-block-blue-btn">${getText(
       'block_all_blue_users',
     )}</button>
 
-    <button type="button" style="margin-left: 1rem" class="yet-twitter-chain-mute-all-btn">${getText(
+    <button type="button" class="yet-twitter-chain-mute-btn yet-twitter-chain-mute-all-btn" style="margin-left: 1rem">${getText(
       'mute_all_users',
     )}</button>
 
-    <button type="button" class="yet-twitter-chain-mute-blue-btn">${getText(
+    <button type="button" class="yet-twitter-chain-mute-btn yet-twitter-chain-mute-blue-btn">${getText(
       'mute_all_blue_users',
     )}</button>
   `
