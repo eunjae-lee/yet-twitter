@@ -52,9 +52,6 @@ export const injectDefaultCSS = () => {
   .yet-twitter-chain-block-banner-btn:hover {
     opacity: 0.9;
   }
-  .yet-twitter-chain-mute-btn {
-    margin-left: 1rem;
-  }
   `
   injectCSS(css)
 }

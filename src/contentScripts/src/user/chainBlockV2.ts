@@ -15,7 +15,6 @@ const getParsedItem = (key: string) => {
   try {
     return JSON.parse(window.sessionStorage.getItem(key) || '')
   } catch (err) {
-    console.log('💡 error parsing item', err)
     return undefined
   }
 }
@@ -45,26 +44,46 @@ const attachChainBlockButton = () => {
     blockButtonWrapper = document.createElement('div')
     blockButtonWrapper.className = 'yet-twitter-chain-block-btn-wrapper'
     blockButtonWrapper.innerHTML = `
-    <button type="button" class="yet-twitter-chain-block-btn">${getText(
+    <button type="button" class="yet-twitter-chain-block-all-btn">${getText(
       'block_all_users',
     )}</button>
 
-    <button type="button" class="yet-twitter-chain-mute-btn">${getText(
+    <button type="button" class="yet-twitter-chain-block-blue-btn">${getText(
+      'block_all_blue_users',
+    )}</button>
+
+    <button type="button" style="margin-left: 1rem" class="yet-twitter-chain-mute-all-btn">${getText(
       'mute_all_users',
+    )}</button>
+
+    <button type="button" class="yet-twitter-chain-mute-blue-btn">${getText(
+      'mute_all_blue_users',
     )}</button>
   `
     parent.insertBefore(blockButtonWrapper, elem)
 
     blockButtonWrapper
-      .querySelector('.yet-twitter-chain-block-btn')
+      .querySelector('.yet-twitter-chain-block-all-btn')
       ?.addEventListener('click', () => {
-        requestToCollectUsers(elem, 'block', scrollContainer)
+        requestToCollectUsers(elem, 'block', false, scrollContainer)
       })
 
     blockButtonWrapper
-      .querySelector('.yet-twitter-chain-mute-btn')
+      .querySelector('.yet-twitter-chain-block-blue-btn')
       ?.addEventListener('click', () => {
-        requestToCollectUsers(elem, 'mute', scrollContainer)
+        requestToCollectUsers(elem, 'block', true, scrollContainer)
+      })
+
+    blockButtonWrapper
+      .querySelector('.yet-twitter-chain-mute-all-btn')
+      ?.addEventListener('click', () => {
+        requestToCollectUsers(elem, 'mute', false, scrollContainer)
+      })
+
+    blockButtonWrapper
+      .querySelector('.yet-twitter-chain-mute-blue-btn')
+      ?.addEventListener('click', () => {
+        requestToCollectUsers(elem, 'mute', true, scrollContainer)
       })
   }
 
@@ -113,6 +132,7 @@ const attachChainBlockButton = () => {
 const requestToCollectUsers = async (
   element: Element,
   type: 'block' | 'mute',
+  blueOnly: boolean,
   _scrollContainer?: Element,
 ) => {
   if (!confirm(getText('chain_block_gather_desc'))) {
@@ -123,7 +143,7 @@ const requestToCollectUsers = async (
   if (!scrollContainer) {
     return
   }
-  const users = await collectUsers(scrollContainer)
+  const users = await collectUsers(scrollContainer, blueOnly)
   const message = isKorean()
     ? `정말로 ${users.length}명을 ${
         type === 'block' ? '차단' : '뮤트'
@@ -320,7 +340,7 @@ const showBanner = (
     })
 }
 
-const collectUsers = async (scrollContainer: Element) => {
+const collectUsers = async (scrollContainer: Element, blueOnly: boolean) => {
   scrollContainer.scrollTo({top: 0})
   const set = new Set<string>()
   while (true) {
@@ -332,6 +352,11 @@ const collectUsers = async (scrollContainer: Element) => {
         (user) => !user.querySelector("div[data-testid='userFollowIndicator']"),
       )
       .filter((user) => !user.querySelector('button[data-testid$=-unfollow]'))
+      .filter((user) =>
+        blueOnly
+          ? user.querySelector('svg[data-testid="icon-verified"]')
+          : true,
+      )
       .map((user) => {
         return user
           .querySelector('a[role=link]')

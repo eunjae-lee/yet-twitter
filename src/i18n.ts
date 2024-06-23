@@ -30,8 +30,10 @@ const messages = {
     view_list: '목록 보기',
     view_stats: '통계 보기',
     view: '보기',
-    block_all_users: '모든 유저 차단하기',
-    mute_all_users: '모든 유저 뮤트하기',
+    block_all_users: '모두 차단',
+    block_all_blue_users: '블루만 차단',
+    mute_all_users: '모두 뮤트',
+    mute_all_blue_users: '블루만 뮤트',
     chain_block_desc: "'확인'을 누르시면 이 리스트의 모든 유저가 차단됩니다.",
     chain_mute_desc: "'확인'을 누르시면 이 리스트의 모든 유저가 뮤트됩니다.",
     chain_block_rate_limit_desc:
@@ -90,8 +92,10 @@ const messages = {
     view_list: 'View List',
     view_stats: 'View Stats',
     view: 'View',
-    block_all_users: 'Block All Users',
-    mute_all_users: 'Mute All Users',
+    block_all_users: 'Block All',
+    block_all_blue_users: 'Block Blue Only',
+    mute_all_users: 'Mute All',
+    mute_all_blue_users: 'Mute Blue Only',
     chain_block_desc:
       "Once you click 'OK', it will block all users in this list.",
     chain_mute_desc:
