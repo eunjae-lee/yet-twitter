@@ -2,11 +2,27 @@
 
 import {getText, isKorean} from '~/i18n'
 import {findParentElement, wait, watchSelector} from '../timeline/utils'
-import {storageLocal} from '~/composables/useStorageLocal'
 import {waitForElementToExist} from '../wait'
 
 const KEY_CHAIN_BLOCK_V2 = 'yet-twitter-chain-block-v2'
 const KEY_CHAIN_MUTE_V2 = 'yet-twitter-chain-mute-v2'
+
+const setItem = (key: string, value: any) => {
+  window.sessionStorage.setItem(key, value)
+}
+
+const getParsedItem = (key: string) => {
+  try {
+    return JSON.parse(window.sessionStorage.getItem(key) || '')
+  } catch (err) {
+    console.log('💡 error parsing item', err)
+    return undefined
+  }
+}
+
+const removeItem = (key: string) => {
+  window.sessionStorage.removeItem(key)
+}
 
 export const chainBlock = async () => {
   attachChainBlockButton()
@@ -141,7 +157,7 @@ const requestToCollectUsers = async (
     return
   }
 
-  await storageLocal.setItem(
+  setItem(
     type === 'block' ? KEY_CHAIN_BLOCK_V2 : KEY_CHAIN_MUTE_V2,
     JSON.stringify({
       users,
@@ -155,7 +171,7 @@ const requestToCollectUsers = async (
 }
 
 const processUserIfNeeded = async (type: 'block' | 'mute') => {
-  const data = await storageLocal.getParsedItem(
+  const data = getParsedItem(
     type === 'block' ? KEY_CHAIN_BLOCK_V2 : KEY_CHAIN_MUTE_V2,
   )
   if (!data) {
@@ -184,6 +200,7 @@ const blockUser = async ({user, delay}: {user: string; delay: number}) => {
   )) as HTMLElement
 
   if (isBlocked()) {
+    await wait(2000)
     await increaseNextIndex('block')
     window.location.href = 'https://x.com/'
     return
@@ -214,6 +231,7 @@ const muteUser = async ({user, delay}: {user: string; delay: number}) => {
   )) as HTMLElement
 
   if (isMuted()) {
+    await wait(2000)
     await increaseNextIndex('mute')
     window.location.href = 'https://x.com/'
     return
@@ -245,10 +263,10 @@ function isMuted() {
 }
 
 const increaseNextIndex = async (type: 'block' | 'mute') => {
-  const {users, delay, nextIndex, enabled} = await storageLocal.getParsedItem(
+  const {users, delay, nextIndex, enabled} = getParsedItem(
     type === 'block' ? KEY_CHAIN_BLOCK_V2 : KEY_CHAIN_MUTE_V2,
   )
-  await storageLocal.setItem(
+  setItem(
     type === 'block' ? KEY_CHAIN_BLOCK_V2 : KEY_CHAIN_MUTE_V2,
     JSON.stringify({
       users,
@@ -296,9 +314,7 @@ const showBanner = (
           ),
         )
       ) {
-        await storageLocal.removeItem(
-          type === 'block' ? KEY_CHAIN_BLOCK_V2 : KEY_CHAIN_MUTE_V2,
-        )
+        removeItem(type === 'block' ? KEY_CHAIN_BLOCK_V2 : KEY_CHAIN_MUTE_V2)
         banner?.remove()
       }
     })
