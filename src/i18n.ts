@@ -33,8 +33,14 @@ const messages = {
     block_mute: '차단 / 뮤트',
     block_all_users: '모두 차단',
     block_all_blue_users: '블루만 차단',
+    block_custom_list: '차단할 목록 직접 입력하기',
+    block_custom_list_desc:
+      '차단할 계정 아이디를 한 줄에 하나씩 입력해주세요 (@ 제외)',
     mute_all_users: '모두 뮤트',
     mute_all_blue_users: '블루만 뮤트',
+    mute_custom_list: '뮤트할 목록 직접 입력하기',
+    mute_custom_list_desc:
+      '뮤트할 계정 아이디를 한 줄에 하나씩 입력해주세요 (@ 제외)',
     chain_block_desc: "'확인'을 누르시면 이 리스트의 모든 유저가 차단됩니다.",
     chain_mute_desc: "'확인'을 누르시면 이 리스트의 모든 유저가 뮤트됩니다.",
     chain_block_rate_limit_desc:
@@ -97,8 +103,14 @@ const messages = {
     block_mute: 'Block / Mute',
     block_all_users: 'Block All',
     block_all_blue_users: 'Block Blue Only',
+    block_custom_list: 'Block Custom List',
+    block_custom_list_desc:
+      'Enter the list of usernames to block, one account per line (without @).',
     mute_all_users: 'Mute All',
     mute_all_blue_users: 'Mute Blue Only',
+    mute_custom_list: 'Mute Custom List',
+    mute_custom_list_desc:
+      'Enter the list of usernames to mute, one account per line (without @).',
     chain_block_desc:
       "Once you click 'OK', it will block all users in this list.",
     chain_mute_desc:

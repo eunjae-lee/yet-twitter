@@ -50,11 +50,33 @@ const attachChainBlockButton = () => {
       <option value="block_all_blue_users">${getText(
         'block_all_blue_users',
       )}</option>
+      <option value="block_custom_list">${getText('block_custom_list')}</option>
       <option value="mute_all_users">${getText('mute_all_users')}</option>
       <option value="mute_all_blue_users">${getText(
         'mute_all_blue_users',
       )}</option>
+      <option value="mute_custom_list">${getText('mute_custom_list')}</option>
     </select>
+
+    <div class="block_custom_list_wrapper" style="display: none">
+      <p>${getText('block_custom_list_desc')}</p>
+      <textarea rows="10" placeholder="username1\nusername2"></textarea>
+      <div style="margin-top: 0.25rem">
+        <button type="button" class="yet-twitter-block-custom-list-btn">${getText(
+          'block_all_users',
+        )}</button>
+      </div>
+    </div>
+      
+    <div class="mute_custom_list_wrapper" style="display: none">
+      <p>${getText('mute_custom_list_desc')}</p>
+      <textarea rows="10" placeholder="username1\nusername2"></textarea>
+      <div style="margin-top: 0.25rem">
+        <button type="button" class="yet-twitter-mute-custom-list-btn">${getText(
+          'mute_all_users',
+        )}</button>
+      </div>
+    </div>
     `
     parent.insertBefore(blockButtonWrapper, element)
 
@@ -90,7 +112,61 @@ const attachChainBlockButton = () => {
             blueOnly: true,
             scrollContainer,
           })
+        } else if (action === 'block_custom_list') {
+          ;(
+            blockButtonWrapper!.querySelector(
+              '.block_custom_list_wrapper',
+            ) as HTMLDivElement
+          ).style.display = 'block'
+          ;(
+            blockButtonWrapper!.querySelector(
+              '.mute_custom_list_wrapper',
+            ) as HTMLDivElement
+          ).style.display = 'none'
+        } else if (action === 'mute_custom_list') {
+          ;(
+            blockButtonWrapper!.querySelector(
+              '.block_custom_list_wrapper',
+            ) as HTMLDivElement
+          ).style.display = 'none'
+          ;(
+            blockButtonWrapper!.querySelector(
+              '.mute_custom_list_wrapper',
+            ) as HTMLDivElement
+          ).style.display = 'block'
         }
+      })
+
+    const processCustomList = async (type: 'block' | 'mute') => {
+      const users = (
+        blockButtonWrapper?.querySelector(
+          `.${type}_custom_list_wrapper textarea`,
+        ) as HTMLTextAreaElement
+      ).value
+        .trim()
+        .split('\n')
+        .map((line) => {
+          const trimmed = line.trim()
+          return trimmed.startsWith('@') ? trimmed.slice(1) : trimmed
+        })
+
+      if (!confirm(getText('rate_limit_warning'))) {
+        return
+      }
+
+      await processCollectedUsers({users, type})
+    }
+
+    blockButtonWrapper
+      .querySelector('.yet-twitter-block-custom-list-btn')
+      ?.addEventListener('click', async () => {
+        await processCustomList('block')
+      })
+
+    blockButtonWrapper
+      .querySelector('.yet-twitter-mute-custom-list-btn')
+      ?.addEventListener('click', async () => {
+        await processCustomList('mute')
       })
   }
 
@@ -145,6 +221,16 @@ const requestToCollectUsers = async ({
     return
   }
   const users = await collectUsers(scrollContainer, blueOnly)
+  await processCollectedUsers({users, type})
+}
+
+const processCollectedUsers = async ({
+  users,
+  type,
+}: {
+  users: string[]
+  type: 'block' | 'mute'
+}) => {
   const message = isKorean()
     ? `정말로 ${users.length}명을 ${
         type === 'block' ? '차단' : '뮤트'
