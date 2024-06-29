@@ -5,6 +5,8 @@ import {waitForElementToExist} from '../wait'
 const KEY_CHAIN_BLOCK_V2 = 'yet-twitter-chain-block-v2'
 const KEY_CHAIN_MUTE_V2 = 'yet-twitter-chain-mute-v2'
 
+const DEFAULT_DELAY = 15 // seconds
+
 const setItem = (key: string, value: any) => {
   window.sessionStorage.setItem(key, value)
 }
@@ -28,11 +30,11 @@ export const chainBlock = async () => {
 }
 
 const attachChainBlockButton = () => {
-  const attach = (elem: Element | null, scrollContainer?: Element) => {
-    if (!elem || !elem.parentElement) {
+  const attach = (element: Element | null, scrollContainer?: Element) => {
+    if (!element || !element.parentElement) {
       return
     }
-    const parent = elem.parentElement
+    const parent = element.parentElement
     let blockButtonWrapper = parent.querySelector(
       '.yet-twitter-chain-block-btn-wrapper',
     )
@@ -42,46 +44,53 @@ const attachChainBlockButton = () => {
     blockButtonWrapper = document.createElement('div')
     blockButtonWrapper.className = 'yet-twitter-chain-block-btn-wrapper'
     blockButtonWrapper.innerHTML = `
-    <button type="button" class="yet-twitter-chain-block-btn yet-twitter-chain-block-all-btn">${getText(
-      'block_all_users',
-    )}</button>
-
-    <button type="button" class="yet-twitter-chain-block-btn yet-twitter-chain-block-blue-btn">${getText(
-      'block_all_blue_users',
-    )}</button>
-
-    <button type="button" class="yet-twitter-chain-mute-btn yet-twitter-chain-mute-all-btn" style="margin-left: 1rem">${getText(
-      'mute_all_users',
-    )}</button>
-
-    <button type="button" class="yet-twitter-chain-mute-btn yet-twitter-chain-mute-blue-btn">${getText(
-      'mute_all_blue_users',
-    )}</button>
-  `
-    parent.insertBefore(blockButtonWrapper, elem)
+    <select class="yet-twitter-chain-select">
+      <option disabled selected value="">${getText('block_mute')}</option>
+      <option value="block_all_users">${getText('block_all_users')}</option>
+      <option value="block_all_blue_users">${getText(
+        'block_all_blue_users',
+      )}</option>
+      <option value="mute_all_users">${getText('mute_all_users')}</option>
+      <option value="mute_all_blue_users">${getText(
+        'mute_all_blue_users',
+      )}</option>
+    </select>
+    `
+    parent.insertBefore(blockButtonWrapper, element)
 
     blockButtonWrapper
-      .querySelector('.yet-twitter-chain-block-all-btn')
-      ?.addEventListener('click', () => {
-        requestToCollectUsers(elem, 'block', false, scrollContainer)
-      })
-
-    blockButtonWrapper
-      .querySelector('.yet-twitter-chain-block-blue-btn')
-      ?.addEventListener('click', () => {
-        requestToCollectUsers(elem, 'block', true, scrollContainer)
-      })
-
-    blockButtonWrapper
-      .querySelector('.yet-twitter-chain-mute-all-btn')
-      ?.addEventListener('click', () => {
-        requestToCollectUsers(elem, 'mute', false, scrollContainer)
-      })
-
-    blockButtonWrapper
-      .querySelector('.yet-twitter-chain-mute-blue-btn')
-      ?.addEventListener('click', () => {
-        requestToCollectUsers(elem, 'mute', true, scrollContainer)
+      .querySelector('select')
+      ?.addEventListener('change', async (event) => {
+        const action = (event.target as HTMLSelectElement)?.value
+        if (action === 'block_all_users') {
+          await requestToCollectUsers({
+            element,
+            type: 'block',
+            blueOnly: false,
+            scrollContainer,
+          })
+        } else if (action === 'block_all_blue_users') {
+          await requestToCollectUsers({
+            element,
+            type: 'block',
+            blueOnly: true,
+            scrollContainer,
+          })
+        } else if (action === 'mute_all_users') {
+          await requestToCollectUsers({
+            element,
+            type: 'mute',
+            blueOnly: false,
+            scrollContainer,
+          })
+        } else if (action === 'mute_all_blue_users') {
+          await requestToCollectUsers({
+            element,
+            type: 'mute',
+            blueOnly: true,
+            scrollContainer,
+          })
+        }
       })
   }
 
@@ -110,29 +119,23 @@ const attachChainBlockButton = () => {
     )}"] nav[aria-label="${getText('aria_label_community_members')}"]`,
     (elem) => attach(elem, document.body.parentElement!),
   )
-  // ;(window as any).navigation.addEventListener('navigate', (event: any) => {
-  //   setTimeout(() => {
-  //     if (
-  //       event.destination.url.startsWith('https://x.com/i/communities/') &&
-  //       event.destination.url.endsWith('/members')
-  //     ) {
-  //       watchSelector(
-  //         `div[aria-label="${getText(
-  //           'aria_label_community_member_timeline',
-  //         )}"] nav[aria-label="${getText('aria_label_community_members')}"]`,
-  //         (elem) => attach(elem, document.body.parentElement!),
-  //       )
-  //     }
-  //   }, 1000)
-  // })
 }
 
-const requestToCollectUsers = async (
-  element: Element,
-  type: 'block' | 'mute',
-  blueOnly: boolean,
-  _scrollContainer?: Element,
-) => {
+const requestToCollectUsers = async ({
+  element,
+  type,
+  blueOnly,
+  scrollContainer: _scrollContainer,
+}: {
+  element: Element
+  type: 'block' | 'mute'
+  blueOnly: boolean
+  scrollContainer?: Element
+}) => {
+  if (!confirm(getText('rate_limit_warning'))) {
+    return
+  }
+
   if (!confirm(getText('chain_block_gather_desc'))) {
     return
   }
@@ -159,9 +162,9 @@ const requestToCollectUsers = async (
         ? 'chain_block_rate_limit_desc_v2'
         : 'chain_mute_rate_limit_desc_v2',
     ),
-    '10',
+    String(DEFAULT_DELAY),
   )
-  const delay = parseFloat(delayStr || '10')
+  const delay = parseFloat(delayStr || String(DEFAULT_DELAY))
   if (isNaN(delay)) {
     alert(getText('invalid_number'))
     return

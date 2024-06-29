@@ -33,6 +33,7 @@ export const injectDefaultCSS = () => {
   .yet-twitter-chain-block-banner {
     padding: 1rem;
   }
+  .yet-twitter-chain-select,
   .yet-twitter-chain-block-btn,
   .yet-twitter-chain-mute-btn,
   .yet-twitter-chain-block-banner-btn {
@@ -51,6 +52,13 @@ export const injectDefaultCSS = () => {
   .yet-twitter-chain-mute-btn:hover,
   .yet-twitter-chain-block-banner-btn:hover {
     opacity: 0.9;
+  }
+
+  .yet-twitter-chain-select {
+    text-align: center;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
   }
   `
   injectCSS(css)

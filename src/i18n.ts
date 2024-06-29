@@ -30,6 +30,7 @@ const messages = {
     view_list: '목록 보기',
     view_stats: '통계 보기',
     view: '보기',
+    block_mute: '차단 / 뮤트',
     block_all_users: '모두 차단',
     block_all_blue_users: '블루만 차단',
     mute_all_users: '모두 뮤트',
@@ -48,6 +49,7 @@ const messages = {
     chain_block_stop_desc_v2: '차단을 멈추시겠습니까?',
     chain_mute_stop_desc_v2: '뮤트를 멈추시겠습니까?',
     cancelled: '취소되었습니다.',
+    rate_limit_warning: `트위터가 봇이라고 판단하게 되면 이 브라우저에서의 트위터 사용이 일시적으로 (몇 시간 혹은 하루 정도) 중지될 수 있습니다. 보통은 다른 브라우저나 다른 기기에서의 트위터 사용에는 영향을 끼치지 않지만, 이 부분이 트위터 내부 정책인 관계로 정확한 결과를 보장하긴 어렵습니다. 그래도 시도하시겠습니까?`,
 
     view_manual: '설명서 보기',
 
@@ -92,6 +94,7 @@ const messages = {
     view_list: 'View List',
     view_stats: 'View Stats',
     view: 'View',
+    block_mute: 'Block / Mute',
     block_all_users: 'Block All',
     block_all_blue_users: 'Block Blue Only',
     mute_all_users: 'Mute All',
@@ -112,6 +115,7 @@ const messages = {
     chain_mute_stop_desc_v2: 'Would you like to stop muting?',
     invalid_number: 'Please enter a number.',
     cancelled: 'Cancelled.',
+    rate_limit_warning: `If Twitter suspects you are a bot, you may be rate-limited. This means you cannot use Twitter on this browser temporarily (for hours or days). It likely won't affect your Twitter usage on other devices or browsers, but it's Twitter's internal policy, so nothing can be guaranteed. Do you still want to proceed?`,
 
     view_manual: 'View Manual',
 
