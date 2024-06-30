@@ -30,7 +30,7 @@ const removeBlueTweets = (response) => {
     return
   }
 
-  const stats = {}
+  const stats = []
 
   const getInfo = (itemContent) => {
     const isBlueVerified =
@@ -43,17 +43,20 @@ const removeBlueTweets = (response) => {
     const screenName =
       itemContent.tweet_results.result.core.user_results.result.legacy
         .screen_name
+    const name =
+      itemContent.tweet_results.result.core.user_results.result.legacy.name
 
     return {
       isBlueVerified,
       followedBy,
       following,
       screenName,
+      name,
     }
   }
 
   const shouldInclude = (info) => {
-    const {isBlueVerified, followedBy, following, screenName} = info
+    const {isBlueVerified, followedBy, following} = info
 
     if (isBlueVerified && extOptions.hideBlueMarks) {
       if (extOptions.hideBlueMarksExceptFollower && followedBy) {
@@ -85,7 +88,10 @@ const removeBlueTweets = (response) => {
             if (shouldInclude(info)) {
               return entry
             } else {
-              stats[info.screenName] = (stats[info.screenName] || 0) + 1
+              stats.push({
+                screenName: `@${info.screenName}`,
+                userName: info.name,
+              })
               return undefined
             }
           } catch (_err) {
@@ -101,6 +107,7 @@ const removeBlueTweets = (response) => {
   script.setAttribute('charset', 'utf-8')
   script.className = 'yet-twitter-timeline-blue-removal-stats'
   script.innerHTML = JSON.stringify(stats)
+  document.body.appendChild(script)
 
   return JSON.stringify(json)
 }

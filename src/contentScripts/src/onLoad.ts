@@ -4,6 +4,7 @@ import {watchTimeline} from './timeline'
 import {injectCSS, injectDefaultCSS} from './injectCSS'
 import {chainBlock} from './user/chainBlockV2'
 import {getText} from '~/i18n'
+import {storeBlueRemovalStats} from './timeline/blueRemoval'
 
 // works for
 // - timeline: /home
@@ -35,4 +36,6 @@ export async function onLoad() {
   //     tab.addEventListener('click', watch)
   //   }
   // )
+
+  storeBlueRemovalStats()
 }
