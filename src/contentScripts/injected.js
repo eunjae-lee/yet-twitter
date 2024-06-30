@@ -1,20 +1,129 @@
+const readExtentionOptions = () => {
+  const elem = document.querySelector('.yet-twitter-options')
+  if (!elem) {
+    return {}
+  }
+  try {
+    return JSON.parse(elem.innerHTML)
+  } catch (err) {
+    return {}
+  }
+}
+
+const extOptions = readExtentionOptions()
+
+const safeParse = (text) => {
+  try {
+    return JSON.parse(text)
+  } catch (err) {}
+  return undefined
+}
+
+const removeBlueTweets = (response) => {
+  const json = safeParse(response)
+  if (!json) {
+    return
+  }
+
+  const instructions = json.data?.home?.home_timeline_urt?.instructions
+  if (!instructions || !Array.isArray(instructions)) {
+    return
+  }
+
+  const stats = {}
+
+  const getInfo = (itemContent) => {
+    const isBlueVerified =
+      itemContent.tweet_results.result.core.user_results.result.is_blue_verified
+    const followedBy =
+      itemContent.tweet_results.result.core.user_results.result.legacy
+        .followed_by
+    const following =
+      itemContent.tweet_results.result.core.user_results.result.legacy.following
+    const screenName =
+      itemContent.tweet_results.result.core.user_results.result.legacy
+        .screen_name
+
+    return {
+      isBlueVerified,
+      followedBy,
+      following,
+      screenName,
+    }
+  }
+
+  const shouldInclude = (info) => {
+    const {isBlueVerified, followedBy, following, screenName} = info
+
+    if (isBlueVerified && extOptions.hideBlueMarks) {
+      if (extOptions.hideBlueMarksExceptFollower && followedBy) {
+        return true
+      } else if (extOptions.hideBlueMarksExceptFollowing && following) {
+        return true
+      } else {
+        return false
+      }
+    } else {
+      return true
+    }
+  }
+
+  instructions.forEach((instruction) => {
+    if (instruction.type === 'TimelineAddEntries') {
+      instruction.entries = instruction.entries
+        .map((entry) => {
+          try {
+            let info
+            if (entry.content.entryType === 'TimelineTimelineModule') {
+              info = getInfo(entry.content.items[0].item.itemContent)
+            } else if (entry.content.entryType === 'TimelineTimelineItem') {
+              info = getInfo(entry.content.itemContent)
+            }
+            if (!info) {
+              return entry
+            }
+            if (shouldInclude(info)) {
+              return entry
+            } else {
+              stats[info.screenName] = (stats[info.screenName] || 0) + 1
+              return undefined
+            }
+          } catch (_err) {
+            return entry
+          }
+        })
+        .filter(Boolean)
+    }
+  })
+
+  const script = document.createElement('script')
+  script.setAttribute('type', 'application/json')
+  script.setAttribute('charset', 'utf-8')
+  script.className = 'yet-twitter-timeline-blue-removal-stats'
+  script.innerHTML = JSON.stringify(stats)
+
+  return JSON.stringify(json)
+}
+
 const rules = [
   {
     check: (url) =>
-      url.startsWith('https://twitter.com/i/api/graphql/') &&
+      url.startsWith('https://x.com/i/api/graphql/') &&
       new URL(url).pathname.endsWith('/HomeLatestTimeline'),
     classNames: ['yet-twitter-timeline', 'yet-twitter-latest-timeline'],
+    modifyResponse: removeBlueTweets,
   },
   {
     check: (url) =>
-      url.startsWith('https://twitter.com/i/api/graphql/') &&
+      url.startsWith('https://x.com/i/api/graphql/') &&
       new URL(url).pathname.endsWith('/HomeTimeline'),
     classNames: ['yet-twitter-timeline', 'yet-twitter-recommendation-timeline'],
+    modifyResponse: removeBlueTweets,
   },
 ]
 
 ;(function (xhr) {
-  var XHR = XMLHttpRequest.prototype
+  var XHR = xhr.prototype
 
   var open = XHR.open
   var send = XHR.send
@@ -60,7 +169,7 @@ const rules = [
         }
 
         // here you get the RESPONSE HEADERS
-        var responseHeaders = this.getAllResponseHeaders()
+        // var responseHeaders = this.getAllResponseHeaders()
 
         if (
           (this.responseType === '' || this.responseType === 'text') &&
@@ -82,6 +191,15 @@ const rules = [
                 ;(document.head || document.documentElement).appendChild(script)
               }
             })
+
+            const rule = rules.find((rule) => rule.check(this._url))
+            if (rule) {
+              const newResponse = rule.modifyResponse(this.responseText)
+              if (newResponse) {
+                this.responseText = newResponse
+              }
+            }
+
             // printing url, request headers, response headers, response body, to console
 
             // console.log('💡 url', this._url)
