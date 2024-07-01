@@ -290,10 +290,16 @@ const processUserIfNeeded = async (type: 'block' | 'mute') => {
   }
 
   showBanner(type, nextIndex, users.length)
-  if (type === 'block') {
-    await blockUser({user: users[nextIndex], delay: parseFloat(delay)})
-  } else {
-    await muteUser({user: users[nextIndex], delay: parseFloat(delay)})
+
+  const promise =
+    type === 'block'
+      ? blockUser({user: users[nextIndex], delay: parseFloat(delay)})
+      : muteUser({user: users[nextIndex], delay: parseFloat(delay)})
+
+  const result = await waitForPromiseOrTimeout(promise, delay * 1000)
+  if (result.status !== 'resolved') {
+    await increaseNextIndex(type)
+    window.location.href = 'https://x.com/'
   }
 }
 
@@ -480,4 +486,28 @@ const findScrollContainer = (element: Element) => {
     findParentElement(element, 'div[data-viewportview="true"]') ||
     document.body.parentElement
   )
+}
+
+function waitForPromiseOrTimeout(promise: Promise<any>, timeout: number) {
+  // Create a promise that rejects after the specified timeout
+  const timeoutPromise = new Promise((_, reject) => {
+    setTimeout(() => {
+      reject(new Error('Timeout'))
+    }, timeout)
+  })
+
+  // Race between the original promise and the timeout promise
+  return Promise.race([promise, timeoutPromise])
+    .then((result) => {
+      // Handle the case where the original promise resolves
+      return {status: 'resolved', value: result}
+    })
+    .catch((error) => {
+      // Handle the case where the original promise rejects
+      if (error.message === 'Timeout') {
+        return {status: 'timeout'}
+      } else {
+        return {status: 'rejected', reason: error}
+      }
+    })
 }
