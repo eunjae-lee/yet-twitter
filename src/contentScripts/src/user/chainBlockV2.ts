@@ -296,7 +296,8 @@ const processUserIfNeeded = async (type: 'block' | 'mute') => {
       ? blockUser({user: users[nextIndex], delay: parseFloat(delay)})
       : muteUser({user: users[nextIndex], delay: parseFloat(delay)})
 
-  const result = await waitForPromiseOrTimeout(promise, delay * 1000)
+  const buffer = 3
+  const result = await waitForPromiseOrTimeout(promise, (delay + buffer) * 1000)
   if (result.status !== 'resolved') {
     await increaseNextIndex(type)
     window.location.href = 'https://x.com/'
