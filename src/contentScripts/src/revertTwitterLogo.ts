@@ -1,8 +1,8 @@
-import {watchSelector} from './timeline/utils'
+import {watchSelectorResize} from './timeline/utils'
 
 export const revertTwitterLogo = async () => {
   const selector = 'header h1[role="heading"] a[href="/home"]'
-  watchSelector(selector, () => {
+  watchSelectorResize(selector, () => {
     const a = document.querySelector(selector)
     if (!a) {
       return

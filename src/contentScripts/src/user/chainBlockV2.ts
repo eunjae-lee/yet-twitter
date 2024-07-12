@@ -1,6 +1,10 @@
 import {getText, isKorean} from '~/i18n'
-import {findParentElement, wait, watchSelector} from '../timeline/utils'
-import {waitForElementToExist} from '../wait'
+import {
+  findParentElement,
+  wait,
+  waitForElementToExist,
+  watchSelectorResize,
+} from '../timeline/utils'
 
 const KEY_CHAIN_BLOCK_V2 = 'yet-twitter-chain-block-v2'
 const KEY_CHAIN_MUTE_V2 = 'yet-twitter-chain-mute-v2'
@@ -170,26 +174,32 @@ const attachChainBlockButton = () => {
       })
   }
 
-  watchSelector(
+  watchSelectorResize(
     `div[aria-label="${getText('aria_label_list_members')}"]`,
     attach,
   )
-  watchSelector(`div[aria-label="${getText('aria_label_following')}"]`, attach)
-  watchSelector(`div[aria-label="${getText('aria_label_followers')}"]`, attach)
-  watchSelector(
+  watchSelectorResize(
+    `div[aria-label="${getText('aria_label_following')}"]`,
+    attach,
+  )
+  watchSelectorResize(
+    `div[aria-label="${getText('aria_label_followers')}"]`,
+    attach,
+  )
+  watchSelectorResize(
     `div[aria-label="${getText('aria_label_followers_you_know')}"]`,
     attach,
   )
-  watchSelector(
+  watchSelectorResize(
     `div[aria-label="${getText('aria_label_verified_followers')}"]`,
     attach,
   )
-  watchSelector(
+  watchSelectorResize(
     `div[aria-label="${getText('aria_label_subscriptions')}"]`,
     attach,
   )
 
-  watchSelector(
+  watchSelectorResize(
     `div[aria-label="${getText(
       'aria_label_community_member_timeline',
     )}"] nav[aria-label="${getText('aria_label_community_members')}"]`,

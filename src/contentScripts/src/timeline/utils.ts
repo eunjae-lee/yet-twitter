@@ -1,5 +1,4 @@
 import debounce from 'just-debounce-it'
-import {waitForElementToExist} from '../wait'
 
 export const queryTweets = (
   containerSelector: string,
@@ -38,7 +37,7 @@ export const hideTweet = (tweet: HTMLElement) => {
   tweet.classList.add('yet-twitter-hidden-tweet')
 }
 
-export const watchSelector = async (
+export const watchSelectorResize = async (
   selector: string,
   callback: (element: Element | null) => void,
   debounceMs = 100,
@@ -55,7 +54,7 @@ export const watchSelector = async (
         // this section has been detached.
         // let's wait for it to appear again
         resizeObserver.disconnect()
-        watchSelector(selector, callback, debounceMs)
+        watchSelectorResize(selector, callback, debounceMs)
         return
       }
 
@@ -80,5 +79,74 @@ export function findParentElement(startingElement: Element, selector: string) {
 export async function wait(delay: number) {
   return new Promise((resolve) => {
     setTimeout(resolve, delay)
+  })
+}
+
+export function watchMutation(
+  selector: string,
+  callbackFn: (element: Element) => void,
+): MutationObserver {
+  // Select the target node
+  const targetNode = document.body
+
+  // Options for the observer (which mutations to observe)
+  const config: MutationObserverInit = {
+    attributes: true,
+    childList: true,
+    subtree: true,
+  }
+
+  // Callback function to execute when mutations are observed
+  const callback = function (
+    mutationsList: MutationRecord[],
+    observer: MutationObserver,
+  ) {
+    for (const mutation of mutationsList) {
+      if (mutation.type === 'childList') {
+        mutation.addedNodes.forEach((node) => {
+          if (
+            node.nodeType === 1 &&
+            node instanceof Element &&
+            node.matches(selector)
+          ) {
+            // Perform actions when the desired element appears
+            callbackFn(node as Element)
+          }
+        })
+      }
+    }
+  }
+
+  // Create an observer instance linked to the callback function
+  const observer = new MutationObserver(callback)
+
+  // Start observing the target node for configured mutations
+  observer.observe(targetNode, config)
+
+  // Return the observer so it can be disconnected later if needed
+  return observer
+}
+
+// https://bobbyhadz.com/blog/javascript-wait-for-element-to-exist
+export async function waitForElementToExist(
+  selector: string,
+): Promise<Element | null> {
+  return new Promise((resolve) => {
+    if (document.querySelector(selector)) {
+      resolve(document.querySelector(selector))
+      return
+    }
+
+    const observer = new MutationObserver(() => {
+      if (document.querySelector(selector)) {
+        resolve(document.querySelector(selector))
+        observer.disconnect()
+      }
+    })
+
+    observer.observe(document.body, {
+      subtree: true,
+      childList: true,
+    })
   })
 }

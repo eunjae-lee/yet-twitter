@@ -5,6 +5,7 @@ import {injectCSS, injectDefaultCSS} from './injectCSS'
 import {chainBlock} from './user/chainBlockV2'
 import {getText} from '~/i18n'
 import {storeBlueRemovalStats} from './timeline/blueRemoval'
+import {addQuoteTweetButton} from './timeline/addQuoteTweetButton'
 
 // works for
 // - timeline: /home
@@ -36,6 +37,8 @@ export async function onLoad() {
   //     tab.addEventListener('click', watch)
   //   }
   // )
+
+  addQuoteTweetButton()
 
   storeBlueRemovalStats()
 }

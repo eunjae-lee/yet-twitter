@@ -16,7 +16,9 @@ export const editTimeline = async ({
   extOptions: ExtOptions
   mutedAccountsStorage: MutedAccountsStorage
 }) => {
-  await hideMutedBioKeywords(selector, extOptions)
-  await addMuteButton(selector)
-  await hideMutedAccounts(selector, mutedAccountsStorage)
+  return await Promise.allSettled([
+    hideMutedBioKeywords(selector, extOptions),
+    addMuteButton(selector),
+    hideMutedAccounts(selector, mutedAccountsStorage),
+  ])
 }
