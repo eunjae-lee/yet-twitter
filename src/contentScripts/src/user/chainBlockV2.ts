@@ -324,7 +324,7 @@ const blockUser = async ({user, delay}: {user: string; delay: number}) => {
   )) as HTMLElement
 
   if (isBlocked()) {
-    await wait(2000)
+    await wait(10000)
     await increaseNextIndex('block')
     window.location.href = 'https://x.com/'
     return
@@ -355,7 +355,7 @@ const muteUser = async ({user, delay}: {user: string; delay: number}) => {
   )) as HTMLElement
 
   if (isMuted() || isBlocked()) {
-    await wait(2000)
+    await wait(10000)
     await increaseNextIndex('mute')
     window.location.href = 'https://x.com/'
     return
