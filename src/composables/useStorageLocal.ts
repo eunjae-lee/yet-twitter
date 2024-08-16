@@ -11,10 +11,8 @@ import {
   KEY_MUTE_ACCOUNTS,
   KEY_MUTE_BIO,
   KEY_OPTIONS,
-  KEY_STATS_FOR_TWEETS,
   MutedAccount,
   MutedBioStorage,
-  TweetRemovedStat,
 } from '~/logic'
 
 export const storageLocal: StorageLikeAsync & {
@@ -47,9 +45,6 @@ const useStorageLocal = <T>(
   initialValue: MaybeRef<T>,
   options?: UseStorageAsyncOptions<T>,
 ): RemovableRef<T> => useStorageAsync(key, initialValue, storageLocal, options)
-
-export const useStatsForTweets = () =>
-  useStorageLocal<Record<string, TweetRemovedStat>>(KEY_STATS_FOR_TWEETS, {})
 
 export const useExtensionOptions = () =>
   useStorageLocal(KEY_OPTIONS, DEFAULT_OPTIONS)

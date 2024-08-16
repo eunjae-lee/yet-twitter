@@ -66,10 +66,6 @@ watch(optionsLoaded, (newValue) => {
       </div>
     </section>
 
-    <CollapsableSection :title="$t('hide_tweets_with_blue_mark')">
-      <HideBlueMarkStats />
-    </CollapsableSection>
-
     <CollapsableSection :title="$t('mute_bio_keyword')">
       <BioKeywordMute />
     </CollapsableSection>

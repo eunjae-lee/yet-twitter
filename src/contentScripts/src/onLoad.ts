@@ -4,7 +4,6 @@ import {watchTimeline} from './timeline'
 import {injectCSS, injectDefaultCSS} from './injectCSS'
 import {chainBlock} from './user/chainBlockV2'
 import {getText} from '~/i18n'
-import {storeBlueRemovalStats} from './timeline/blueRemoval'
 import {addQuoteTweetButton} from './timeline/addQuoteTweetButton'
 
 // works for
@@ -31,7 +30,9 @@ export async function onLoad() {
 
   // Console.info('[vitesse-webext] Hello world from content script')
   // eslint-disable-next-line @typescript-eslint/no-floating-promises
-  watchTimeline(`div[aria-label="${getText('aria_label_your_home_timeline')}"]`)
+  watchTimeline(
+    'section[aria-labelledby^="accessible-list-"][role="region"] > div[aria-label]',
+  )
   // Array.from(document.querySelectorAll('a[href="/home"][role="tab"]')).forEach(
   //   (tab) => {
   //     tab.addEventListener('click', watch)
@@ -39,6 +40,4 @@ export async function onLoad() {
   // )
 
   addQuoteTweetButton()
-
-  storeBlueRemovalStats()
 }

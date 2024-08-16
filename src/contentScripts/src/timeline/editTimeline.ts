@@ -6,6 +6,7 @@ import type {ExtOptions, MutedAccountsStorage} from '~/logic'
 import {addMuteButton} from './addMuteButton'
 import {hideMutedAccounts} from './hideMutedAccounts'
 import {hideMutedBioKeywords} from './hideMutedBioKeywords'
+import {hideBlueTweets} from './hideBlueTweets'
 
 export const editTimeline = async ({
   selector,
@@ -17,6 +18,7 @@ export const editTimeline = async ({
   mutedAccountsStorage: MutedAccountsStorage
 }) => {
   return await Promise.allSettled([
+    hideBlueTweets(selector, extOptions),
     hideMutedBioKeywords(selector, extOptions),
     addMuteButton(selector),
     hideMutedAccounts(selector, mutedAccountsStorage),
