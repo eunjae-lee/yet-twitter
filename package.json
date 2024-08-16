@@ -1,7 +1,7 @@
 {
   "name": "yet-twitter",
   "displayName": "Yet Twitter - Minimal Twitter Theme",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "private": true,
   "packageManager": "pnpm@9.1.1",
   "description": "Customize your Twitter experience",
