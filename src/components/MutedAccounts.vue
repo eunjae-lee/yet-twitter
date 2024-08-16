@@ -12,6 +12,7 @@ const list = computed(() => {
       screenName,
       active: new Date() < new Date(item.muteUntil),
     }))
+    .filter((item) => item.active)
 })
 
 const unmute = (screenName: string) => {
