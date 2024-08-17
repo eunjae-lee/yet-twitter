@@ -9,7 +9,7 @@ import {
 const KEY_CHAIN_BLOCK_V2 = 'yet-twitter-chain-block-v2'
 const KEY_CHAIN_MUTE_V2 = 'yet-twitter-chain-mute-v2'
 
-const DEFAULT_DELAY = 15 // seconds
+const DEFAULT_DELAY = 30 // seconds
 
 const setItem = (key: string, value: any) => {
   window.sessionStorage.setItem(key, value)
