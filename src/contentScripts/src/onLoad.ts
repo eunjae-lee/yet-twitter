@@ -3,8 +3,8 @@ import {readOptionAsync} from '~/logic'
 import {watchTimeline} from './timeline'
 import {injectCSS, injectDefaultCSS} from './injectCSS'
 import {chainBlock} from './user/chainBlockV2'
-import {getText} from '~/i18n'
 import {addQuoteTweetButton} from './timeline/addQuoteTweetButton'
+import {hideDiscoverMore} from './timeline/hideDiscoverMore'
 
 // works for
 // - timeline: /home
@@ -40,4 +40,6 @@ export async function onLoad() {
   // )
 
   addQuoteTweetButton()
+
+  hideDiscoverMore()
 }

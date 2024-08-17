@@ -64,6 +64,19 @@ watch(optionsLoaded, (newValue) => {
           />
         </label>
       </div>
+
+      <div class="form-control">
+        <label class="space-x-2 cursor-pointer label">
+          <span class="flex items-center gap-1 label-text">
+            <span>{{ $t('hide_discover_more') }}</span>
+          </span>
+          <input
+            v-model="extOptions.hideDiscoverMore"
+            type="checkbox"
+            class="toggle toggle-primary"
+          />
+        </label>
+      </div>
     </section>
 
     <CollapsableSection :title="$t('mute_bio_keyword')">

@@ -2,7 +2,7 @@ import {storageLocal} from '~/composables/useStorageLocal'
 
 export const KEY_OPTIONS = 'yet-twitter-options'
 export const DEFAULT_OPTIONS = {
-  ver: 1,
+  ver: 2,
 
   // Tweet
   hideRepliesFromMutedAccounts: true,
@@ -14,6 +14,8 @@ export const DEFAULT_OPTIONS = {
   hideBlueMarksExceptFollowing: true,
 
   hideRightSidebar: true,
+
+  hideDiscoverMore: true,
 
   // Common
   revertTwitterLogo: true,
@@ -33,6 +35,12 @@ const optionsMigrations: OptionsMigration = {
     ver: 1,
     hideBlueMarksExceptFollower: true,
     hideBlueMarksExceptFollowing: true,
+  }),
+
+  1: (options: any) => ({
+    ...options,
+    ver: 2,
+    hideDiscoverMore: true,
   }),
 }
 

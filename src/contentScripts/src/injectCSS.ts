@@ -85,6 +85,11 @@ export const injectDefaultCSS = () => {
     font-size: 14px;
     padding: 0.5rem 1rem;
   }
+
+  .hide-discover-more,
+  .hide-discover-more ~ * {
+    display: none;
+  }
   `
   injectCSS(css)
 }

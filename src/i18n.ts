@@ -59,6 +59,9 @@ const messages = {
     rate_limit_warning: `트위터가 봇이라고 판단하게 되면 이 브라우저에서의 트위터 사용이 일시적으로 (몇 시간 혹은 하루 정도) 중지될 수 있습니다. 보통은 다른 브라우저나 다른 기기에서의 트위터 사용에는 영향을 끼치지 않지만, 이 부분이 트위터 내부 정책인 관계로 정확한 결과를 보장하긴 어렵습니다. 그래도 시도하시겠습니까?`,
 
     view_manual: '설명서 보기',
+    hide_discover_more: '"더 찾아보기" 숨기기',
+    discover_more: '더 찾아보기',
+    sourced_from: 'X에서 소스 제공',
 
     aria_label_your_home_timeline: '홈 타임라인',
     aria_label_list_members: '타임라인: 리스트 멤버',
@@ -132,6 +135,9 @@ const messages = {
     rate_limit_warning: `If Twitter suspects you are a bot, you may be rate-limited. This means you cannot use Twitter on this browser temporarily (for hours or days). It likely won't affect your Twitter usage on other devices or browsers, but it's Twitter's internal policy, so nothing can be guaranteed. Do you still want to proceed?`,
 
     view_manual: 'View Manual',
+    hide_discover_more: 'Hide "Discover more"',
+    discover_more: 'Discover more',
+    sourced_from: 'Sourced from across X',
 
     aria_label_your_home_timeline: 'Timeline: Your Home Timeline',
     aria_label_list_members: 'Timeline: List members',
