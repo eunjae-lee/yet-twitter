@@ -1,6 +1,7 @@
 import debounce from 'just-debounce-it'
 import {waitForElementToExist} from './utils'
 import {lastOpenedRetweetMenu} from './hookRetweetButton'
+import {getText} from '~/i18n'
 
 export const addQuoteTweetButton = () => {
   watchMenu((elem) => {
@@ -32,7 +33,7 @@ export const addQuoteTweetButton = () => {
     if (!textSpan) {
       return
     }
-    textSpan.innerText = 'View Quotes'
+    textSpan.innerText = getText('view_quotes')
 
     quoteButton.parentElement?.appendChild(viewQuoteButton)
   })
