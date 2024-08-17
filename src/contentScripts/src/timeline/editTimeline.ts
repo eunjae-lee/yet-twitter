@@ -7,6 +7,7 @@ import {addMuteButton} from './addMuteButton'
 import {hideMutedAccounts} from './hideMutedAccounts'
 import {hideMutedBioKeywords} from './hideMutedBioKeywords'
 import {hideBlueTweets} from './hideBlueTweets'
+import {hookRetweetButton} from './hookRetweetButton'
 
 export const editTimeline = async ({
   selector,
@@ -22,5 +23,6 @@ export const editTimeline = async ({
     hideMutedBioKeywords(selector, extOptions),
     addMuteButton(selector),
     hideMutedAccounts(selector, mutedAccountsStorage),
+    hookRetweetButton(selector),
   ])
 }

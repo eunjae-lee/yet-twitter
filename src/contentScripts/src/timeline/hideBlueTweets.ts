@@ -23,13 +23,11 @@ export const hideBlueTweets = async (
       continue
     }
     if (extOptions.hideBlueMarksExceptFollower && !accountInfo.followedBy) {
-      console.log('💡 hiding', accountInfo)
       hideTweet(tweet)
     } else if (
       extOptions.hideBlueMarksExceptFollowing &&
       !accountInfo.following
     ) {
-      console.log('💡 hiding', accountInfo)
       hideTweet(tweet)
     }
   }
