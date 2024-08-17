@@ -10,7 +10,9 @@ export async function watchTimeline(selector: string) {
   watchSelectorResize(selector, async () => {
     if (window.location.pathname === '/home') {
       loadTimelineData()
-      await editTimeline({selector, extOptions, mutedAccountsStorage})
+      setTimeout(() => {
+        editTimeline({selector, extOptions, mutedAccountsStorage})
+      }, 100)
     }
   })
 }
