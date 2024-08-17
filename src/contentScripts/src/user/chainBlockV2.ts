@@ -230,7 +230,8 @@ const requestToCollectUsers = async ({
   if (!scrollContainer) {
     return
   }
-  const users = await collectUsers(scrollContainer, blueOnly)
+  const users = await collectUsers(scrollContainer, blueOnly, type === 'block')
+  console.log('💡 collected users', users)
   await processCollectedUsers({users, type})
 }
 
@@ -324,7 +325,7 @@ const blockUser = async ({user, delay}: {user: string; delay: number}) => {
   )) as HTMLElement
 
   if (isBlocked()) {
-    await wait(10000)
+    await wait(delay * 1000)
     await increaseNextIndex('block')
     window.location.href = 'https://x.com/'
     return
@@ -355,7 +356,7 @@ const muteUser = async ({user, delay}: {user: string; delay: number}) => {
   )) as HTMLElement
 
   if (isMuted() || isBlocked()) {
-    await wait(10000)
+    await wait(delay * 1000)
     await increaseNextIndex('mute')
     window.location.href = 'https://x.com/'
     return
@@ -444,7 +445,11 @@ const showBanner = (
     })
 }
 
-const collectUsers = async (scrollContainer: Element, blueOnly: boolean) => {
+const collectUsers = async (
+  scrollContainer: Element,
+  blueOnly: boolean,
+  excludeAlreadyBlockedUser: boolean,
+) => {
   scrollContainer.scrollTo({top: 0})
   const set = new Set<string>()
   while (true) {
@@ -461,6 +466,16 @@ const collectUsers = async (scrollContainer: Element, blueOnly: boolean) => {
           ? user.querySelector('svg[data-testid="icon-verified"]')
           : true,
       )
+      .filter((user) => {
+        if (
+          excludeAlreadyBlockedUser &&
+          user.querySelector("button[role='button'][data-testid$='-unblock']")
+        ) {
+          return false
+        }
+
+        return true
+      })
       .map((user) => {
         return user
           .querySelector('a[role=link]')
